@@ -11,7 +11,23 @@ npm run dev
 
 Open http://localhost:3000
 
-## Catalogue videos
+## Pages
+
+| Page | Address | What it shows |
+| --- | --- | --- |
+| Home | `/` | Hero, the work grid, about, contact |
+| Micro Drama | `/micro-drama` | Video hero, the micro-drama catalogue, services, about, contact |
+
+The two buttons in the centre of the top bar switch between them; the current page is pink.
+
+## Home page work grid
+
+Built automatically from every video in `website p upload krne k liye content` that is **not**
+inside the `md` folder. Loose videos form the first tab; each folder is its own tab.
+Tab names, titles, hidden videos and the order are set in `data/work.js`.
+The hero words are in `data/site.js` (`home`).
+
+## Catalogue
 
 The catalogue is built automatically from the folder
 
@@ -19,18 +35,19 @@ The catalogue is built automatically from the folder
 website p upload krne k liye content/md
 ```
 
-inside this project (change the path in `data/catalogue.js` if you rename it).
-
-- A **folder** inside `md` = one series (one card). Every video in it is an episode, in file-name order.
+- **One folder = one title** (one card). Put the title's video(s) in it.
+- **Several videos = episodes.** `ep1`, `ep 2`, `part 3` in the file name sets the episode number.
   A file with "trailer" in its name is shown first as "Trailer".
-- A **loose video** inside `md` = its own card with a single video.
-- Any image in a series folder (e.g. `poster.jpg`) becomes the card poster. Without one, the first
-  frame of the first video is used.
-- Use `.mp4` (H.264 + AAC) so every browser can play it.
-- Plot text, cast/tag chips, like/save numbers and locked episodes are optional and are set per
-  series in `data/catalogue.js`.
+- **The text file** in the folder (`description.md`, `discription.md`, any `.md` / `.txt`) supplies
+  the title, the one-line hook, the plot, the genre chips and the details list. Lines written as
+  `Name · value` (Genre, Format, Status ...) become the details; `Episode 1: Name` starts the text
+  for one episode. The exact layout is described at the top of `data/catalogue.js`.
+- **Card picture:** any image in the folder (e.g. `poster.jpg`). Without one, a frame of the video is used.
+- **Card order:** A-Z by folder name, or set your own in `order` in `data/catalogue.js`.
+- Use `.mp4` (H.264 + AAC) so every browser can play it. iPhone/QuickTime `.MOV` files are usually
+  HEVC, which Firefox and many Windows/Android browsers cannot play.
 
-Add or remove files and refresh the page - no code change needed.
+Add, rename or remove folders and refresh the page - no code change needed.
 
 ## Video protection
 
@@ -51,7 +68,10 @@ When deploying, also set `STREAM_SECRET` to any long random string.
 | What | File |
 | --- | --- |
 | Site text, services, team, contact links | `data/site.js` |
-| Catalogue folder + per-series details | `data/catalogue.js` |
+| Micro-drama folder + per-series details | `data/catalogue.js` |
+| Home work grid: tabs, titles, hidden, order | `data/work.js` |
+| Home hero | `components/HomeHero.js` |
+| Home work grid | `components/Work.js` |
 | Catalogue grid | `components/Catalogue.js` |
 | Full-page watch popup | `components/WatchModal.js` |
 | Video player | `components/Player.js` |

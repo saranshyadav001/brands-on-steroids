@@ -24,13 +24,13 @@ body {
 .has-cursor, .has-cursor * { cursor: none !important; }
 .cursor-ring, .cursor-dot { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
 .has-cursor .cursor-ring, .has-cursor .cursor-dot { opacity: 1; }
-.cursor-ring > i { display: block; width: 40px; height: 40px; border-radius: 9999px; border: 1px solid rgba(8, 8, 8, 0.45); transition: transform 0.25s, background 0.25s, border-color 0.25s; }
+.cursor-ring > i { display: block; width: 40px; height: 40px; border-radius: 9999px; border: 1.5px solid rgba(8, 8, 8, 0.75); transition: transform 0.25s, background 0.25s, border-color 0.25s; }
 .cursor-dot > i { display: block; width: 10px; height: 10px; border-radius: 9999px; background: #F82870; transition: background 0.2s, transform 0.2s; }
 .cursor-ring[data-hover="1"] > i { transform: scale(1.6); background: rgba(248, 40, 112, 0.12); border-color: #F82870; }
 .cursor-dot[data-hover="1"] > i { transform: scale(0.6); }
-.cursor-ring[data-light="1"] > i { border-color: rgba(255, 255, 255, 0.7); }
-.cursor-ring[data-light="1"][data-hover="1"] > i { background: rgba(255, 255, 255, 0.18); border-color: #fff; }
-.cursor-dot[data-light="1"] > i { background: #fff; }
+.cursor-ring[data-light="1"] > i { border-color: #fff; border-width: 2px; }
+.cursor-ring[data-light="1"][data-hover="1"] > i { background: rgba(255, 255, 255, 0.25); border-color: #fff; }
+.cursor-dot[data-light="1"] > i { background: #fff; box-shadow: 0 0 0 1px rgba(8, 8, 8, 0.25); }
 
 /* soft dark shadow so light text stays readable over the (fully visible) hero video */
 .shade { text-shadow: 0 2px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4); }
@@ -53,3 +53,20 @@ body {
 
 /* Hide any native media UI a browser might still try to draw */
 video::-webkit-media-controls, video::-webkit-media-controls-enclosure { display: none !important; }
+
+/* Contact heading: sized from the column width so the longest word ("SOMETHING") always fits on one line */
+.contact-title { overflow-wrap: normal; word-break: keep-all; hyphens: none; font-size: clamp(1.25rem, calc((100vw - 44px) / 10.8), 3.75rem); }
+@media (min-width: 768px) { .contact-title { font-size: clamp(1.25rem, calc((100vw - 270px) / 10.8), 3.75rem); } }
+@media (min-width: 1024px) { .contact-title { font-size: clamp(1.25rem, calc((min(100vw - 264px, 80rem) - 52px) / 21.6), 3.75rem); } }
+
+/* Home hero headline: sized from the screen width so "START CREATING" always fits on one line */
+.home-title { font-size: clamp(1.5rem, calc((100vw - 44px) / 10), 4rem); }
+.home-title-split { max-width: 6.5em; } /* phones: "START" / "CREATING" on two lines */
+@media (min-width: 640px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 44px) / 16.6), 6rem); } .home-title-split { max-width: none; } }
+@media (min-width: 768px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 184px) / 16.6), 6rem); } }
+
+/* Home hero: slow drifting dots */
+.home-dot { position: absolute; border-radius: 9999px; background: rgba(8, 8, 8, 0.28); animation: home-drift 14s ease-in-out infinite alternate; }
+.home-dot:nth-child(3n) { background: rgba(248, 40, 112, 0.45); animation-duration: 18s; }
+@keyframes home-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(26px, -34px, 0); } }
+@media (prefers-reduced-motion: reduce) { .home-dot { animation: none; } }

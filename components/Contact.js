@@ -30,18 +30,18 @@ export default function Contact() {
       <div className="grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-2">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.18em]">Contact</p>
-          <h2 className="h-display mt-4 break-words text-3xl md:text-5xl lg:text-6xl">Let&apos;s make something they&apos;ll binge.</h2>
+          <h2 className="h-display contact-title mt-4">Let&apos;s make something they&apos;ll binge.</h2>
           <p className="hand mt-4 text-3xl !text-white">Have a campaign idea that needs AI filmmaking?</p>
           <p className="mt-6 font-mono text-xs uppercase tracking-widest">
             Most engagements start with a 30-minute call about what you want to ship.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={site.whatsapp} target="_blank" rel="noreferrer" className="btn bg-white text-brand hover:bg-ink hover:text-white">WhatsApp</a>
+            <a href={site.whatsapp} target="_blank" rel="noreferrer" data-cursor-dark className="btn bg-white text-brand hover:bg-ink hover:text-white">WhatsApp</a>
             <a href={`mailto:${site.email}`} className="btn border border-white hover:bg-white hover:text-brand">{site.email}</a>
           </div>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-3 bg-paper p-6 text-ink">
+        <form onSubmit={onSubmit} data-cursor-dark className="space-y-3 bg-paper p-6 text-ink">
           <h3 className="font-display text-xl font-extrabold uppercase">Tell us about your project</h3>
           {/* honeypot */}
           <input name="company_website" tabIndex={-1} autoComplete="off" className="hidden" />

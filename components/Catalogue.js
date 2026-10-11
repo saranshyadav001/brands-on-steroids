@@ -62,13 +62,19 @@ export default function Catalogue({ series = [], folder = "", missing = false })
     }
   }, []);
 
-  const jump = useCallback((slug) => {
-    window.history.replaceState(window.history.state, "", urlFor(slug, 0));
-    setWatch({ slug, ep: 0 });
-  }, []);
+  const jump = useCallback(
+    (slug) => {
+      const s = series.find((x) => x.slug === slug);
+      if (!s) return;
+      const ep = firstPlayable(s);
+      window.history.replaceState(window.history.state, "", urlFor(slug, ep));
+      setWatch({ slug, ep });
+    },
+    [series]
+  );
 
   const active = watch && series.find((s) => s.slug === watch.slug);
-  const singles = useMemo(() => series.filter((s) => s.episodes.length === 1 && s.episodes[0].src), [series]);
+  const playable = useMemo(() => series.filter((s) => s.episodes.some((e) => e.src)), [series]);
 
   return (
     <section id="catalogue" className="border-t border-ink/10 px-5 py-24 md:px-12">
@@ -128,9 +134,9 @@ export default function Catalogue({ series = [], folder = "", missing = false })
                     <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-brand text-xs text-white">▶</span>
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 text-white">
                       <p className="font-mono text-[10px] uppercase tracking-widest text-brand">
-                        {s.genre || (s.episodes.length > 1 ? `${s.episodes.length} videos` : "Watch")}
+                        {[s.genre, s.episodes.length > 1 ? `${s.episodes.length} episodes` : ""].filter(Boolean).join(" · ") || "Watch"}
                       </p>
-                      <p className="font-display text-base font-extrabold uppercase leading-tight">{s.title}</p>
+                      <p className="line-clamp-3 break-words font-display text-[11px] font-extrabold uppercase leading-tight sm:text-sm md:text-base">{s.title}</p>
                     </div>
                   </div>
                 </button>
@@ -140,7 +146,7 @@ export default function Catalogue({ series = [], folder = "", missing = false })
         )}
       </div>
 
-      {active && <WatchModal series={active} index={watch.ep} onSelect={select} onClose={close} siblings={singles} onJump={jump} />}
+      {active && <WatchModal series={active} index={watch.ep} onSelect={select} onClose={close} catalogue={playable} onJump={jump} />}
     </section>
   );
 }

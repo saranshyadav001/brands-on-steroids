@@ -21,7 +21,10 @@ export default function Cursor() {
       }
       const t = e.target;
       const hover = t.closest?.("a,button,input,select,textarea,label,[role=button]") ? "1" : "0";
-      const light = t.closest?.("[data-cursor-light]") ? "1" : "0";
+      // nearest marked area wins: data-cursor-light = dark/coloured background (white cursor),
+      // data-cursor-dark = light panel inside one of those (dark ring + pink dot again)
+      const zone = t.closest?.("[data-cursor-light],[data-cursor-dark]");
+      const light = zone && zone.hasAttribute("data-cursor-light") ? "1" : "0";
       for (const el of [ring.current, dot.current]) {
         el.dataset.hover = hover;
         el.dataset.light = light;

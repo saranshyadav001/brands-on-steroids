@@ -16,6 +16,30 @@ export const site = {
   ],
 };
 
+// Home page hero
+export const home = {
+  note: "\u201cNo more boring ads. Make them feel something.\u201d \u2013 Director\u2019s Note",
+  line1: "Stop making",
+  struck: "Content.",
+  struckNote: "(generic noise \u2715)",
+  line2: "Start creating",
+  accent: "Culture.",
+  hand: "AI-native films people WANT to watch",
+  lead: "Brands On Steroids",
+  text: "is an AI-native media house creating films, entertainment and internet moments that brands can\u2019t stop talking about.",
+  cta: "Let\u2019s create something people can\u2019t ignore",
+  strip: ["A24 visual benchmark", "0% generic slop", "24fps"],
+  // chips under the hero: [label, link]
+  chips: [
+    ["Social media", "#work"],
+    ["AI film making", "#work"],
+    ["Micro drama", "/micro-drama"],
+    ["Brand entertainment", "#work"],
+    ["Corporate shoots", "#work"],
+    ["Podcast", "#work"],
+  ],
+};
+
 export const services = [
   {
     n: "01",
@@ -47,7 +71,13 @@ export const services = [
   },
 ];
 
+// Add more people by adding more lines. Photos live in /public/team (square, face centred).
 export const team = [
-  { name: "Founder Name", role: "Founder / Creative Lead", bio: "Short bio goes here.", photo: "" },
-  { name: "Partner Name", role: "Partner / Production", bio: "Short bio goes here.", photo: "" },
+  {
+    name: "Saransh Yadav",
+    role: "Founder",
+    focus: "Brand strategy, creative direction, AI filmmaking and brand entertainment.",
+    bio: "He leads how BOS turns cultural insights into compelling brand worlds, building stories and experiences that make brands impossible to ignore.",
+    photo: "/team/saransh-yadav.jpg",
+  },
 ];
