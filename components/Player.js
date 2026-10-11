@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 // Custom video player. The browser's own controls are never shown, so there is
 // no download / "save video" / picture-in-picture / cast menu anywhere.
@@ -30,7 +30,13 @@ const I = {
   next: "M16 5h2v14h-2zM4 5l11 7-11 7z",
 };
 
-export default function Player({ src, title, onEnded, onPrev, onNext }) {
+// Popup use (default): starts playing straight away, keyboard shortcuts on, prev / next buttons.
+// Inline use on a page: autoPlay={false} hotkeys={false} nav={false} posterAt={2} fill
+//   (fill = the video covers its whole frame; the frame is given the video's own shape)
+//   -> shows a still frame, plays on click, and pauses when another player starts.
+export default function Player({ src, title, onEnded, onPrev, onNext, autoPlay = true, hotkeys = true, nav = true, posterAt = 0, onMeta, fill = false }) {
+  const uid = useId();
+  const started = useRef(autoPlay); // inline: false until the first play (the still frame is not the start)
   const wrap = useRef(null);
   const vid = useRef(null);
   const hide = useRef(null);
@@ -52,8 +58,15 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
   const toggle = useCallback(() => {
     const v = vid.current;
     if (!v) return;
-    if (v.paused) v.play().catch(() => {});
-    else v.pause();
+    if (v.paused) {
+      if (!started.current) {
+        started.current = true;
+        try {
+          v.currentTime = 0; // leave the still frame, start from the beginning
+        } catch {}
+      }
+      v.play().catch(() => {});
+    } else v.pause();
     poke();
   }, [poke]);
 
@@ -92,11 +105,21 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
     setDur(0);
     setError(false);
     setWaiting(true);
+    started.current = autoPlay;
     if (!v || !src) return;
-    v.play().catch(() => setPlaying(false)); // autoplay can be blocked when opened from a shared link
+    if (autoPlay) v.play().catch(() => setPlaying(false)); // autoplay can be blocked when opened from a shared link
     poke();
     return () => clearTimeout(hide.current);
-  }, [src, poke]);
+  }, [src, poke, autoPlay]);
+
+  // only one player makes sound at a time
+  useEffect(() => {
+    const onOther = (e) => {
+      if (e.detail !== uid) vid.current?.pause();
+    };
+    window.addEventListener("bos-play", onOther);
+    return () => window.removeEventListener("bos-play", onOther);
+  }, [uid]);
 
   useEffect(() => {
     const onFs = () => setIsFull(!!(document.fullscreenElement || document.webkitFullscreenElement));
@@ -110,6 +133,7 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
 
   // keyboard: space/k play, arrows seek, m mute, f fullscreen
   useEffect(() => {
+    if (!hotkeys) return;
     const onKey = (e) => {
       const tag = e.target?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -123,7 +147,7 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [toggle, seekBy, toggleMute, toggleFull]);
+  }, [hotkeys, toggle, seekBy, toggleMute, toggleFull]);
 
   const show = ui || !playing;
   const btn = "grid h-10 w-10 place-items-center rounded-full text-white/90 transition hover:bg-white/15 hover:text-white disabled:opacity-30";
@@ -135,33 +159,42 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
       onTouchStart={poke}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
-      className="relative inline-flex h-full max-w-full select-none items-center justify-center bg-black"
+      className={`relative h-full select-none items-center justify-center bg-black ${fill ? "flex w-full" : "inline-flex max-w-full"}`}
       style={{ WebkitTouchCallout: "none" }}
     >
       <video
         key={src}
         ref={vid}
-        src={src}
-        autoPlay
+        src={!autoPlay && posterAt ? `${src}#t=${posterAt}` : src}
+        autoPlay={autoPlay}
         playsInline
-        preload="auto"
+        preload={autoPlay ? "auto" : "metadata"}
         controls={false}
         controlsList="nodownload noremoteplayback noplaybackrate"
         disablePictureInPicture
         disableRemotePlayback
         draggable={false}
         aria-label={title}
-        onPlay={() => setPlaying(true)}
+        onPlay={() => {
+          started.current = true;
+          setPlaying(true);
+          window.dispatchEvent(new CustomEvent("bos-play", { detail: uid }));
+        }}
         onPause={() => setPlaying(false)}
-        onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)}
-        onLoadedMetadata={(e) => setDur(e.currentTarget.duration)}
+        onTimeUpdate={(e) => started.current && setCur(e.currentTarget.currentTime)}
+        onLoadedMetadata={(e) => {
+          setDur(e.currentTarget.duration);
+          onMeta?.(e.currentTarget.videoWidth, e.currentTarget.videoHeight);
+          if (!autoPlay) setWaiting(false);
+        }}
+        onLoadedData={() => !autoPlay && setWaiting(false)}
         onDurationChange={(e) => setDur(e.currentTarget.duration)}
         onWaiting={() => setWaiting(true)}
         onCanPlay={() => setWaiting(false)}
         onPlaying={() => setWaiting(false)}
         onError={() => setError(true)}
         onEnded={onEnded}
-        className="pointer-events-none h-full w-auto max-w-full object-contain"
+        className={`pointer-events-none h-full ${fill ? "w-full object-cover" : "w-auto max-w-full object-contain"}`}
       />
 
       {/* click / tap layer - sits above the video so the video itself is never the click target */}
@@ -208,6 +241,7 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
           value={Math.min(cur, dur || 0)}
           onChange={(e) => {
             const v = vid.current;
+            started.current = true;
             if (v) v.currentTime = Number(e.target.value);
             setCur(Number(e.target.value));
             poke();
@@ -216,15 +250,19 @@ export default function Player({ src, title, onEnded, onPrev, onNext }) {
           style={{ "--p": `${dur ? (cur / dur) * 100 : 0}%` }}
         />
         <div className="mt-1 flex items-center gap-1">
-          <button type="button" className={btn} onClick={onPrev} disabled={!onPrev} aria-label="Previous episode">
-            <Icon d={I.prev} size={18} />
-          </button>
+          {nav && (
+            <button type="button" className={btn} onClick={onPrev} disabled={!onPrev} aria-label="Previous episode">
+              <Icon d={I.prev} size={18} />
+            </button>
+          )}
           <button type="button" className={btn} onClick={toggle} aria-label={playing ? "Pause" : "Play"}>
             <Icon d={playing ? I.pause : I.play} />
           </button>
-          <button type="button" className={btn} onClick={onNext} disabled={!onNext} aria-label="Next episode">
-            <Icon d={I.next} size={18} />
-          </button>
+          {nav && (
+            <button type="button" className={btn} onClick={onNext} disabled={!onNext} aria-label="Next episode">
+              <Icon d={I.next} size={18} />
+            </button>
+          )}
           <span className="ml-1 whitespace-nowrap font-mono text-[11px] tabular-nums text-white/80">
             {fmt(cur)} / {fmt(dur)}
           </span>

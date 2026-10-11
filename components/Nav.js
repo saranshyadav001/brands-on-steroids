@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const link = "font-display text-sm font-bold uppercase tracking-[0.3em] hover:text-brand";
+const link = "whitespace-nowrap font-display text-xs font-bold uppercase tracking-[0.2em] hover:text-brand xl:text-sm xl:tracking-[0.3em]";
 
 // The two pages. The one you are on is shown in pink.
+// Desktop: "Home" sits in the centre of the bar, "Micro Drama" just before "Work" on the right.
 const pages = [
   ["Home", "/"],
   ["Micro Drama", "/micro-drama"],
@@ -14,7 +15,7 @@ const pages = [
 // Mobile full-page menu, per page
 const menus = {
   "/": [
-    ["Work", "#work"],
+    ["Ad films", "#work"],
     ["Studio", "#about"],
     ["Contact", "#contact"],
   ],
@@ -63,15 +64,7 @@ export default function Nav() {
   // light text while over the video / the dark menu, dark text on the paper bar after scrolling
   // (the home page has a paper-coloured hero, so its bar is always dark text)
   const light = (micro && !scrolled) || open;
-  const overVideo = micro && !scrolled && !open;
-  const tab = (active) =>
-    `border px-5 py-2.5 font-display text-[11px] font-bold uppercase tracking-[0.22em] transition ${
-      active
-        ? "border-brand bg-brand text-white"
-        : overVideo
-          ? "border-white/50 text-white hover:border-brand hover:text-brand"
-          : "border-ink/20 text-ink hover:border-brand hover:text-brand"
-    }`;
+  const page = (active) => `${link} ${active ? "text-brand" : ""}`;
 
   return (
     <>
@@ -81,14 +74,14 @@ export default function Nav() {
         }`}
       >
         <div className="relative flex items-center justify-between gap-3 px-5 py-4 md:justify-end md:px-12 md:py-6">
-          {/* Desktop: page buttons in the centre of the bar */}
-          <nav aria-label="Pages" className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-2 md:flex">
-            {pages.map(([label, href]) => (
-              <Link key={href} href={href} aria-current={here === href ? "page" : undefined} data-cursor-light={here === href ? "" : undefined} className={tab(here === href)}>
-                {label}
-              </Link>
-            ))}
-          </nav>
+          {/* Desktop: "Home" in the centre of the bar */}
+          <Link
+            href="/"
+            aria-current={!micro ? "page" : undefined}
+            className={`absolute left-12 top-1/2 hidden -translate-y-1/2 md:block lg:left-1/2 lg:-translate-x-1/2 ${page(!micro)}`}
+          >
+            Home
+          </Link>
 
           {/* Mobile: the side ribbon lives here (dot, brand, 01/01, 35MM, A24+, 24FPS).
               Fixed 40px row: the dot stays centred, the title sits on the dot's line, the meta line hangs below. */}
@@ -105,20 +98,24 @@ export default function Nav() {
           </Link>
 
           {/* Desktop */}
-          <nav className="hidden items-center gap-8 md:flex lg:gap-12">
+          <nav className="hidden items-center gap-5 md:flex xl:gap-8 2xl:gap-12">
+            <Link href="/micro-drama" aria-current={micro ? "page" : undefined} className={page(micro)}>
+              Micro Drama
+            </Link>
             <a href={micro ? "#catalogue" : "#work"} className={link}>Work</a>
             <a href="#about" className={link}>Studio</a>
             <button
               onClick={toggleSound}
               aria-pressed={sound}
-              className={`items-center gap-2 rounded-full border border-ink/20 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:border-brand ${micro ? "hidden lg:flex" : "hidden"}`}
+              aria-label={sound ? "Turn sound off" : "Turn sound on"}
+              className={`items-center gap-2 rounded-full border border-ink/20 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:border-brand ${micro ? "flex" : "hidden"}`}
             >
               <span className="flex h-3 items-end gap-[2px]" aria-hidden="true">
                 <i className={`w-[2px] bg-ink ${sound ? "h-2 animate-pulse" : "h-1"}`} />
                 <i className={`w-[2px] bg-emerald-500 ${sound ? "h-3 animate-pulse" : "h-2"}`} />
                 <i className={`w-[2px] bg-ink ${sound ? "h-2 animate-pulse" : "h-1"}`} />
               </span>
-              Sound {sound ? "on" : "off"}
+              <span className="hidden 2xl:inline">Sound {sound ? "on" : "off"}</span>
             </button>
           </nav>
 
@@ -161,22 +158,20 @@ export default function Nav() {
           data-cursor-light
           className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-ink/90 px-6 pb-10 pt-24 text-white backdrop-blur-xl md:hidden"
         >
-          <div className="flex gap-2">
+          <nav className="my-auto flex flex-col gap-6 py-8">
             {pages.map(([label, href]) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
                 aria-current={here === href ? "page" : undefined}
-                className={`flex-1 border px-3 py-3 text-center font-display text-[11px] font-bold uppercase tracking-[0.18em] ${
-                  here === href ? "border-brand bg-brand text-white" : "border-white/40 text-white"
-                }`}
+                className={`h-display flex items-baseline gap-4 text-2xl hover:text-brand ${here === href ? "text-brand" : ""}`}
               >
+                <span className="font-mono text-[11px] font-medium tracking-widest text-brand">{here === href ? "\u25cf" : "\u2192"}</span>
                 {label}
               </Link>
             ))}
-          </div>
-          <nav className="my-auto flex flex-col gap-6 py-8">
+            <span aria-hidden="true" className="h-px w-full bg-white/15" />
             {menu.map(([label, href], i) => (
               <a
                 key={href}

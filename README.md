@@ -15,16 +15,17 @@ Open http://localhost:3000
 
 | Page | Address | What it shows |
 | --- | --- | --- |
-| Home | `/` | Hero, the work grid, about, contact |
+| Home | `/` | Hero, ad films, about, contact |
 | Micro Drama | `/micro-drama` | Video hero, the micro-drama catalogue, services, about, contact |
 
-The two buttons in the centre of the top bar switch between them; the current page is pink.
+"Home" (centre of the top bar) and "Micro Drama" (next to "Work") switch between them; the current page is pink.
 
-## Home page work grid
+## Home page "Ad films"
 
-Built automatically from every video in `website p upload krne k liye content` that is **not**
-inside the `md` folder. Loose videos form the first tab; each folder is its own tab.
-Tab names, titles, hidden videos and the order are set in `data/work.js`.
+Built automatically from the videos in `website p upload krne k liye content/homepage`:
+first the videos directly in that folder (A-Z), then the videos of each folder inside it
+(for example `seekho`). They are shown one under the other, each with its title above it.
+Titles, hidden videos and the order are set in `data/home.js`.
 The hero words are in `data/site.js` (`home`).
 
 ## Catalogue
@@ -69,9 +70,9 @@ When deploying, also set `STREAM_SECRET` to any long random string.
 | --- | --- |
 | Site text, services, team, contact links | `data/site.js` |
 | Micro-drama folder + per-series details | `data/catalogue.js` |
-| Home work grid: tabs, titles, hidden, order | `data/work.js` |
+| Home ad films: folder, titles, hidden, order | `data/home.js` |
 | Home hero | `components/HomeHero.js` |
-| Home work grid | `components/Work.js` |
+| Home ad films | `components/AdFilms.js` |
 | Catalogue grid | `components/Catalogue.js` |
 | Full-page watch popup | `components/WatchModal.js` |
 | Video player | `components/Player.js` |
