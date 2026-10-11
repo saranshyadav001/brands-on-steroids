@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  background-image:
+    linear-gradient(rgba(8, 8, 8, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.035) 1px, transparent 1px);
+  background-size: 120px 120px;
+}
+::selection { background: #F82870; color: #fff; }
+
+.label { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-brand; }
+.meta { @apply font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40; }
+.h-display { @apply font-display font-extrabold uppercase leading-[0.92] tracking-tight; }
+.hand { @apply font-hand font-semibold text-brand; }
+.btn { @apply inline-block px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.2em] transition; }
+.btn-solid { @apply bg-brand text-white hover:bg-ink; }
+.btn-line { @apply border border-ink/30 text-ink hover:border-brand hover:text-brand; }
+
+/* Custom cursor: ring + pink dot (desktop pointers only; enabled after first mouse move) */
+.has-cursor, .has-cursor * { cursor: none !important; }
+.cursor-ring, .cursor-dot { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+.has-cursor .cursor-ring, .has-cursor .cursor-dot { opacity: 1; }
+.cursor-ring > i { display: block; width: 40px; height: 40px; border-radius: 9999px; border: 1px solid rgba(8, 8, 8, 0.45); transition: transform 0.25s, background 0.25s, border-color 0.25s; }
+.cursor-dot > i { display: block; width: 10px; height: 10px; border-radius: 9999px; background: #F82870; transition: background 0.2s, transform 0.2s; }
+.cursor-ring[data-hover="1"] > i { transform: scale(1.6); background: rgba(248, 40, 112, 0.12); border-color: #F82870; }
+.cursor-dot[data-hover="1"] > i { transform: scale(0.6); }
+.cursor-ring[data-light="1"] > i { border-color: rgba(255, 255, 255, 0.7); }
+.cursor-ring[data-light="1"][data-hover="1"] > i { background: rgba(255, 255, 255, 0.18); border-color: #fff; }
+.cursor-dot[data-light="1"] > i { background: #fff; }
+
+/* soft dark shadow so light text stays readable over the (fully visible) hero video */
+.shade { text-shadow: 0 2px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4); }
+.shade .btn { text-shadow: none; }
