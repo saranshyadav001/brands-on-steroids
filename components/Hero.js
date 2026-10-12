@@ -6,9 +6,9 @@ export default function Hero() {
     <section
       id="top"
       data-cursor-light
-      className="relative flex min-h-screen items-center overflow-hidden px-5 pb-16 pt-32 text-white md:px-12"
+      className="relative flex min-h-screen items-center overflow-hidden px-5 pb-16 pt-32 text-white md:-ml-[84px] md:pl-[calc(84px+3rem)] md:pr-12"
     >
-      {/* video is fully visible: no overlay on top of it */}
+      {/* video is fully visible: no overlay on top of it. On desktop it also runs under the see-through side ribbon */}
       <HeroVideo />
 
       <div className="shade relative z-10 w-full max-w-6xl">

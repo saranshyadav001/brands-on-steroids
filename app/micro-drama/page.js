@@ -17,7 +17,7 @@ export default async function MicroDrama() {
   const library = await getLibrary();
   return (
     <>
-      <Rail />
+      <Rail clear />
       <Nav />
       <main className="md:pl-[84px]">
         <Hero />

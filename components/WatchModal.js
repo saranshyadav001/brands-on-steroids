@@ -4,18 +4,11 @@ import Player from "./Player";
 
 // Full-page watch screen: back button, player, and a side panel with
 // breadcrumb, title, hook, plot (More/Less), genre chips, details,
-// like / save / share, the episode grid (range tabs + "All Episodes")
+// the episode grid (range tabs + "All Episodes")
 // and the rest of the catalogue. When a video ends the next episode plays,
 // and after the last episode the next title starts.
 
 const CHUNK = 50;
-const count = (n) => (n >= 1e6 ? `${+(n / 1e6).toFixed(1)}M` : n >= 1000 ? `${+(n / 1000).toFixed(1)}k` : String(n));
-
-const Svg = ({ children, size = 30 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    {children}
-  </svg>
-);
 const Lock = () => (
   <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M17 9V7A5 5 0 0 0 7 7v2H5v12h14V9h-2zM9 7a3 3 0 0 1 6 0v2H9V7z" />
@@ -29,23 +22,6 @@ const Bars = () => (
   </span>
 );
 
-function useFlag(key) {
-  const [on, setOn] = useState(false);
-  useEffect(() => {
-    try {
-      setOn(localStorage.getItem(key) === "1");
-    } catch {}
-  }, [key]);
-  const flip = () =>
-    setOn((v) => {
-      try {
-        localStorage.setItem(key, v ? "0" : "1");
-      } catch {}
-      return !v;
-    });
-  return [on, flip];
-}
-
 const paras = (t) => t.split(/\n{2,}/).filter(Boolean);
 
 export default function WatchModal({ series, index, onSelect, onClose, catalogue = [], onJump, moreLabel = "More from the catalogue" }) {
@@ -55,8 +31,6 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
   const [more, setMore] = useState(false);
   const [all, setAll] = useState(false);
   const [note, setNote] = useState("");
-  const [liked, flipLike] = useFlag(`bos:like:${series.slug}`);
-  const [saved, flipSave] = useFlag(`bos:save:${series.slug}`);
 
   const multi = series.episodes.length > 1;
   const items = useMemo(() => series.episodes.map((e, i) => ({ e, i })), [series]);
@@ -122,27 +96,12 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
   const prev = move(-1);
   const next = move(1);
 
-  async function share() {
-    const url = window.location.href;
-    const title = multi ? `${series.title} - ${ep.label}` : series.title;
-    try {
-      if (navigator.share) await navigator.share({ title, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        setNote("Link copied to clipboard");
-      }
-    } catch (e) {
-      if (e?.name !== "AbortError") setNote("Could not share - copy the link from the address bar");
-    }
-  }
-
   const chips = [...(series.genres || []), ...series.cast, ...series.tags];
   const plot = series.plot || "";
   const long = plot.length > 260;
   const epText = ep.title || ep.tagline || ep.plot;
   const rangeLabel = (c) => (c.length === 1 ? c[0].e.short : `${c[0].e.num} - ${c[c.length - 1].e.num}`);
   const mono = "font-mono text-[11px] uppercase tracking-[0.18em]";
-  const action = "flex flex-1 flex-col items-center gap-3 py-1 text-white/85 transition hover:text-brand";
 
   const grid = (list) => (
     <div className="grid grid-cols-5 gap-2 sm:grid-cols-6">
@@ -297,31 +256,6 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
                 ))}
               </dl>
             )}
-
-            <div className="mt-7 flex border-y border-white/15 py-5">
-              <button type="button" onClick={flipLike} aria-pressed={liked} className={`${action} ${liked ? "!text-brand" : ""}`}>
-                <Svg>
-                  <path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.200 3 4.500 6.600 4.500c2 0 3.600 1 5.400 3 1.800-2 3.400-3 5.400-3 3.600 0 5.700 3.700 4.200 7.200C19.500 16.400 12 21 12 21z" />
-                </Svg>
-                <span className="font-mono text-[11px] uppercase tracking-widest">
-                  {series.likes != null ? count(series.likes + (liked ? 1 : 0)) : liked ? "Liked" : "Like"}
-                </span>
-              </button>
-              <button type="button" onClick={flipSave} aria-pressed={saved} className={`${action} ${saved ? "!text-brand" : ""}`}>
-                <Svg>
-                  <path d="M6 3h12v18l-6-4.500L6 21V3z" />
-                </Svg>
-                <span className="font-mono text-[11px] uppercase tracking-widest">
-                  {series.saves != null ? count(series.saves + (saved ? 1 : 0)) : saved ? "Saved" : "Save"}
-                </span>
-              </button>
-              <button type="button" onClick={share} className={action}>
-                <Svg>
-                  <path d="M14 4l8 7.500-8 7.500v-4.500C8 14.500 4.500 16.300 2 20c.800-6 4-10.500 12-11.500V4z" />
-                </Svg>
-                <span className="font-mono text-[11px] uppercase tracking-widest">Share</span>
-              </button>
-            </div>
 
             {multi && (
               <section className="mt-7">

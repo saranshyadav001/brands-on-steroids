@@ -3,9 +3,9 @@
 //
 // The section is built automatically from the videos in the folder below:
 // first the videos directly inside it (A-Z), then the videos of each folder
-// inside it (for example "seekho"). One video under the other, each with its title:
-// wide videos have the title above; tall (vertical) and square videos sit on the left
-// with the title to their right.
+// inside it (for example "seekho"). One video under the other, each with its title
+// above it. Tall (vertical) and square videos sit on the left, with a short description
+// (filmNotes / folderNotes below) in the space to their right.
 //
 //   website p upload krne k liye content/
 //     homepage/
@@ -34,6 +34,21 @@ export const filmTitles = {
 // The key is the folder name. Set a folder to "" to show no word for it.
 export const folderLabels = {
   seekho: "Seekho",
+};
+
+// Short description shown to the right of a tall (vertical) video. The key is the file
+// name without ".mp4". Leave a video out (or set "") to show nothing beside it.
+export const filmNotes = {
+  "van husen x nasa saransh": "A concept film imagining Van Heusen meeting NASA: tailoring with a space-age brief, made end to end with AI.",
+  schiaparelli: "A couture concept film for Schiaparelli. Surreal, sculptural and made for the vertical feed.",
+  "fashion concept": "A fashion concept film. Mood, texture and movement first, product second.",
+  "oakley logo collab concept": "A few seconds, one idea: a logo sting exploring an Oakley collaboration.",
+  gridiron: "A sports concept film with the pace and impact of game day, cut for the vertical feed.",
+};
+
+// The same, for every video inside a folder that has no description of its own.
+export const folderNotes = {
+  seekho: "A vertical hook film made for Seekho, written to stop the scroll in the first three seconds.",
 };
 
 // Videos to keep off the site. File names without ".mp4".

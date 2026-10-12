@@ -7,8 +7,8 @@ export const site = {
   heroAccent: "binge.",
   heroText:
     "We produce AI-native micro-dramas, branded series and on-demand video for studios, platforms and brands - from script to final cut.",
-  email: "hello@example.com",
-  whatsapp: "https://wa.me/910000000000",
+  email: "hello@brandsonsteroids.com", // shown on the site; website enquiries are emailed here too
+  whatsapp: "https://wa.me/919713030042", // opens a WhatsApp chat with +91 97130 30042
   socials: [
     { label: "Instagram", href: "https://instagram.com/" },
     { label: "LinkedIn", href: "https://linkedin.com/" },
@@ -26,7 +26,7 @@ export const home = {
   accent: "Culture.",
   hand: "AI-native films people WANT to watch",
   lead: "Brands On Steroids",
-  text: "is an AI-native media house creating films, entertainment and internet moments that brands can\u2019t stop talking about.",
+  text: "is an AI-native media house creating films, entertainment and internet moments that people can\u2019t stop talking about.",
   cta: "Let\u2019s create something people can\u2019t ignore",
   strip: ["A24 visual benchmark", "0% generic slop", "24fps"],
   // chips under the hero: [label, link]
@@ -76,7 +76,7 @@ export const team = [
   {
     name: "Saransh Yadav",
     role: "Founder",
-    focus: "Brand strategy, creative direction, AI filmmaking and brand entertainment.",
+    focus: "Creative direction, AI filmmaking, brand entertainment and brand strategy.",
     bio: "He leads how BOS turns cultural insights into compelling brand worlds, building stories and experiences that make brands impossible to ignore.",
     photo: "/team/saransh-yadav.jpg",
   },

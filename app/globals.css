@@ -31,6 +31,11 @@ body {
 .cursor-ring[data-light="1"] > i { border-color: #fff; border-width: 2px; }
 .cursor-ring[data-light="1"][data-hover="1"] > i { background: rgba(255, 255, 255, 0.25); border-color: #fff; }
 .cursor-dot[data-light="1"] > i { background: #fff; box-shadow: 0 0 0 1px rgba(8, 8, 8, 0.25); }
+/* Full screen: the ring + dot are not part of the full-screen video, so the normal arrow comes back there */
+.has-cursor :fullscreen, .has-cursor :fullscreen * { cursor: auto !important; }
+.has-cursor :fullscreen button, .has-cursor :fullscreen input { cursor: pointer !important; }
+.has-cursor :-webkit-full-screen, .has-cursor :-webkit-full-screen * { cursor: auto !important; }
+.has-cursor :-webkit-full-screen button, .has-cursor :-webkit-full-screen input { cursor: pointer !important; }
 
 /* soft dark shadow so light text stays readable over the (fully visible) hero video */
 .shade { text-shadow: 0 2px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4); }
@@ -64,9 +69,3 @@ video::-webkit-media-controls, video::-webkit-media-controls-enclosure { display
 .home-title-split { max-width: 6.5em; } /* phones: "START" / "CREATING" on two lines */
 @media (min-width: 640px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 44px) / 16.6), 6rem); } .home-title-split { max-width: none; } }
 @media (min-width: 768px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 184px) / 16.6), 6rem); } }
-
-/* Home hero: slow drifting dots */
-.home-dot { position: absolute; border-radius: 9999px; background: rgba(8, 8, 8, 0.28); animation: home-drift 14s ease-in-out infinite alternate; }
-.home-dot:nth-child(3n) { background: rgba(248, 40, 112, 0.45); animation-duration: 18s; }
-@keyframes home-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(26px, -34px, 0); } }
-@media (prefers-reduced-motion: reduce) { .home-dot { animation: none; } }

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const link = "whitespace-nowrap font-display text-xs font-bold uppercase tracking-[0.2em] hover:text-brand xl:text-sm xl:tracking-[0.3em]";
 
 // The two pages. The one you are on is shown in pink.
-// Desktop: "Home" sits in the centre of the bar, "Micro Drama" just before "Work" on the right.
+// Desktop: "BOS" (the home button) sits in the centre of the bar, "Micro Drama" just before "Work" on the right.
 const pages = [
   ["Home", "/"],
   ["Micro Drama", "/micro-drama"],
@@ -29,6 +29,21 @@ const menus = {
     ["Contact", "#contact"],
   ],
 };
+
+// Sound on / off for the hero video (same icon on phone and desktop)
+const Speaker = ({ on }) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M11 5 6 9H3v6h3l5 4V5z" />
+    {on ? (
+      <>
+        <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+        <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+      </>
+    ) : (
+      <path d="m16 9 5 6M21 9l-5 6" />
+    )}
+  </svg>
+);
 
 export default function Nav() {
   const pathname = usePathname() || "/";
@@ -74,13 +89,14 @@ export default function Nav() {
         }`}
       >
         <div className="relative flex items-center justify-between gap-3 px-5 py-4 md:justify-end md:px-12 md:py-6">
-          {/* Desktop: "Home" in the centre of the bar */}
+          {/* Desktop: "BOS" = home, in the centre of the bar */}
           <Link
             href="/"
             aria-current={!micro ? "page" : undefined}
-            className={`absolute left-12 top-1/2 hidden -translate-y-1/2 md:block lg:left-1/2 lg:-translate-x-1/2 ${page(!micro)}`}
+            aria-label="BOS - home"
+            className={`absolute left-12 top-1/2 hidden -translate-y-1/2 font-display text-xl font-extrabold uppercase leading-none tracking-[0.12em] hover:text-brand md:block lg:left-1/2 lg:-translate-x-1/2 xl:text-2xl ${!micro ? "text-brand" : ""}`}
           >
-            Home
+            BOS
           </Link>
 
           {/* Mobile: the side ribbon lives here (dot, brand, 01/01, 35MM, A24+, 24FPS).
@@ -108,14 +124,9 @@ export default function Nav() {
               onClick={toggleSound}
               aria-pressed={sound}
               aria-label={sound ? "Turn sound off" : "Turn sound on"}
-              className={`items-center gap-2 rounded-full border border-ink/20 bg-white px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:border-brand ${micro ? "flex" : "hidden"}`}
+              className={micro ? "grid h-10 w-10 place-items-center hover:text-brand" : "hidden"}
             >
-              <span className="flex h-3 items-end gap-[2px]" aria-hidden="true">
-                <i className={`w-[2px] bg-ink ${sound ? "h-2 animate-pulse" : "h-1"}`} />
-                <i className={`w-[2px] bg-emerald-500 ${sound ? "h-3 animate-pulse" : "h-2"}`} />
-                <i className={`w-[2px] bg-ink ${sound ? "h-2 animate-pulse" : "h-1"}`} />
-              </span>
-              <span className="hidden 2xl:inline">Sound {sound ? "on" : "off"}</span>
+              <Speaker on={sound} />
             </button>
           </nav>
 
@@ -127,17 +138,7 @@ export default function Nav() {
               aria-label={sound ? "Turn sound off" : "Turn sound on"}
               className={micro ? "grid h-10 w-10 place-items-center" : "hidden"}
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M11 5 6 9H3v6h3l5 4V5z" />
-                {sound ? (
-                  <>
-                    <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-                    <path d="M18.5 5.5a9 9 0 0 1 0 13" />
-                  </>
-                ) : (
-                  <path d="m16 9 5 6M21 9l-5 6" />
-                )}
-              </svg>
+              <Speaker on={sound} />
             </button>
             <button
               onClick={() => setOpen(!open)}

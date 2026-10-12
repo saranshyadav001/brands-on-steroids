@@ -1,22 +1,13 @@
 import { home } from "@/data/site";
+import HeroMesh from "./HeroMesh";
 
-// Home page hero: paper background, editorial headline with hand-written notes.
+// Home page hero: paper background with a flowing pink mesh, editorial headline with hand-written notes.
 // All the words live in data/site.js (export const home).
-
-// decorative drifting dots: [left %, top %, size px, delay s]
-const dots = [
-  [7, 18, 5, 0], [16, 44, 4, 3], [24, 8, 3, 6], [33, 72, 5, 2], [41, 30, 3, 8], [52, 86, 4, 5], [58, 12, 5, 1],
-  [66, 60, 3, 7], [72, 26, 4, 4], [79, 78, 5, 9], [86, 40, 3, 2], [92, 14, 4, 6], [95, 66, 5, 3], [47, 55, 3, 10],
-];
 
 export default function HomeHero() {
   return (
     <section id="top" className="relative flex min-h-screen flex-col overflow-hidden px-5 pb-8 pt-24 md:px-12 md:pt-28">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        {dots.map(([l, t, s, d], i) => (
-          <span key={i} className="home-dot" style={{ left: `${l}%`, top: `${t}%`, width: s, height: s, animationDelay: `-${d}s` }} />
-        ))}
-      </div>
+      <HeroMesh />
 
       {/* slate line */}
       <div className="relative flex items-center justify-between gap-4 border-b border-ink/10 pb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">

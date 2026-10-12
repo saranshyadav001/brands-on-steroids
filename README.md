@@ -24,7 +24,8 @@ Open http://localhost:3000
 
 Built automatically from the videos in `website p upload krne k liye content/homepage`:
 first the videos directly in that folder (A-Z), then the videos of each folder inside it
-(for example `seekho`). They are shown one under the other, each with its title above it.
+(for example `seekho`). They are shown one under the other, each with its title above it;
+tall (vertical) videos also get a short description on their right (`filmNotes` in `data/home.js`).
 Titles, hidden videos and the order are set in `data/home.js`.
 The hero words are in `data/site.js` (`home`).
 
@@ -76,7 +77,13 @@ the local folders again.
 
 ## Enquiry form
 
-Copy `.env.example` to `.env.local` and fill in `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
+Each enquiry is emailed to the address in `data/site.js` (`site.email`), with the sender's
+address as reply-to. The email is sent through [Resend](https://resend.com):
+
+1. Sign up at resend.com **with that same address** (then no domain setup is needed).
+2. API Keys -> Create API key, and put it in `.env.local` and on the host as `RESEND_API_KEY`.
+
+Optional: fill in `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to also get each enquiry on Telegram.
 When deploying, also set `STREAM_SECRET` to any long random string.
 
 ## Where to edit
@@ -85,7 +92,8 @@ When deploying, also set `STREAM_SECRET` to any long random string.
 | --- | --- |
 | Site text, services, team, contact links | `data/site.js` |
 | Micro-drama folder + per-series details | `data/catalogue.js` |
-| Home ad films: folder, titles, hidden, order | `data/home.js` |
+| Home ad films: folder, titles, descriptions, hidden, order | `data/home.js` |
+| Home hero mesh | `components/HeroMesh.js` |
 | Home hero | `components/HomeHero.js` |
 | Home ad films | `components/AdFilms.js` |
 | Catalogue grid | `components/Catalogue.js` |

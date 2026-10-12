@@ -45,6 +45,7 @@ export const order = [
 // Optional overrides and extras per title. The key is the folder name.
 // Anything set here wins over the text file.
 export const seriesInfo = {
+  "Narsimah trailer": { title: "Narsimha" }, // the folder has no text file yet
   // "banta": {
   //   title: "BANTA: Hard Reset",
   //   genre: "Sci-Fi Thriller",                  // pink label on the card
@@ -52,8 +53,6 @@ export const seriesInfo = {
   //   plot: "Longer description...",
   //   cast: ["Name One", "Name Two"],            // extra chips
   //   tags: ["Memory", "Guilt"],                 // extra chips
-  //   likes: 5500,                               // starting numbers under the heart / bookmark
-  //   saves: 119700,
   //   freeEpisodes: 2,                           // episodes after this number show a lock (trailer is always free)
   //   episodes: {                                // per-episode text, keyed by file name
   //     "banta-pilot.mp4": { title: "Hard Reset", tagline: "...", plot: "..." },
