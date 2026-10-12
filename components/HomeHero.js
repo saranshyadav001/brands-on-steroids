@@ -1,13 +1,13 @@
 import { home } from "@/data/site";
-import HeroMesh from "./HeroMesh";
+import ParticleField from "./ParticleField";
 
-// Home page hero: paper background with a flowing pink mesh, editorial headline with hand-written notes.
+// Home page hero: paper background with a drifting dot-and-line mesh that reacts to the cursor, editorial headline with hand-written notes.
 // All the words live in data/site.js (export const home).
 
 export default function HomeHero() {
   return (
     <section id="top" className="relative flex min-h-screen flex-col overflow-hidden px-5 pb-8 pt-24 md:px-12 md:pt-28">
-      <HeroMesh />
+      <ParticleField />
 
       {/* slate line */}
       <div className="relative flex items-center justify-between gap-4 border-b border-ink/10 pb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">

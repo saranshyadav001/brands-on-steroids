@@ -1,16 +1,31 @@
-import { team } from "@/data/site";
+import { studio, team } from "@/data/site";
 
 export default function About() {
   const solo = team.length === 1;
   return (
     <section id="about" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
+        {/* the usual checklist, struck through, beside what the studio does instead.
+            The statement is sized from the column width so its longest word always fits on one line. */}
+        <div className="mb-20 grid gap-10 border-b border-ink/10 pb-20 md:mb-24 md:pb-24 lg:grid-cols-2 lg:items-center lg:gap-16">
+          <ol>
+            {studio.struck.map((t, i) => (
+              <li key={t} className="flex items-baseline gap-4 border-t border-ink/10 py-2.5 first:border-t-0">
+                <span className="w-5 shrink-0 font-mono text-[10px] font-medium text-brand">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-display text-sm font-bold uppercase tracking-[0.04em] text-ink/35 line-through decoration-brand decoration-2 md:text-base">{t}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="h-display text-[clamp(1rem,calc((100vw-44px)/14.8),2.4rem)] leading-[1.02] lg:text-[clamp(1.25rem,2.6vw,2.5rem)]">
+            {studio.line} <span className="text-brand">{studio.accent}</span>
+          </p>
+        </div>
+
         <p className="label mb-4">[ About ]</p>
         <h2 className="h-display text-4xl md:text-6xl">
           {solo ? "The mind behind " : "The minds behind "}
           <span className="text-brand">the frame.</span>
         </h2>
-        <p className="mt-8 max-w-2xl border-l-2 border-brand pl-4 text-lg text-ink/70">A short line about the studio goes here.</p>
         <div className={solo ? "mt-14" : "mt-14 grid gap-12 sm:grid-cols-2 lg:grid-cols-3"}>
           {team.map((m) => (
             <div key={m.name} className={solo ? "flex max-w-3xl flex-col gap-8 sm:flex-row sm:items-center sm:gap-10" : ""}>

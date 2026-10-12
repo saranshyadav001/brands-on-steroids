@@ -71,6 +71,27 @@ export const services = [
   },
 ];
 
+// Studio section, shown before "The mind behind the frame": the usual brand-strategy
+// checklist, struck through, next to what the studio does instead.
+export const studio = {
+  struck: [
+    "Brand Purpose & Vision",
+    "Target Audience",
+    "Market & Competitor Analysis",
+    "Brand Positioning",
+    "Brand Mission & Values",
+    "Brand Identity",
+    "Unique Value Proposition (UVP)",
+    "Brand Messaging & Storytelling",
+    "Brand Experience",
+    "Marketing & Communication Strategy",
+    "Brand Awareness & Growth",
+    "Measurement & KPIs",
+  ],
+  line: "We are an alternate branding studio that treats storytelling and entertainment as the",
+  accent: "only brand strategy.",
+};
+
 // Add more people by adding more lines. Photos live in /public/team (square, face centred).
 export const team = [
   {

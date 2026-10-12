@@ -93,7 +93,8 @@ When deploying, also set `STREAM_SECRET` to any long random string.
 | Site text, services, team, contact links | `data/site.js` |
 | Micro-drama folder + per-series details | `data/catalogue.js` |
 | Home ad films: folder, titles, descriptions, hidden, order | `data/home.js` |
-| Home hero mesh | `components/HeroMesh.js` |
+| Home hero mesh | `components/ParticleField.js` |
+| Studio section: struck-through list and statement | `data/site.js` (`studio`) |
 | Home hero | `components/HomeHero.js` |
 | Home ad films | `components/AdFilms.js` |
 | Catalogue grid | `components/Catalogue.js` |
