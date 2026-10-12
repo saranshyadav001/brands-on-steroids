@@ -1,14 +1,28 @@
 "use client";
-import { useState } from "react";
-import { site } from "@/data/site";
+import { useEffect, useRef, useState } from "react";
+import { interests, site } from "@/data/site";
 
 export default function Contact() {
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
+  const message = useRef(null);
+
+  // "Discuss this series" in the watch popup starts the message for the visitor
+  useEffect(() => {
+    const f = (e) => {
+      const el = message.current;
+      if (el && !el.value.trim()) el.value = `I'd like to discuss "${e.detail}".`;
+    };
+    window.addEventListener("bos-discuss", f);
+    return () => window.removeEventListener("bos-discuss", f);
+  }, []);
+
   async function onSubmit(e) {
     e.preventDefault();
+    const form = e.currentTarget; // kept: it is gone from the event once we wait for the reply
     setStatus("sending");
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const fd = new FormData(form);
+    const data = { ...Object.fromEntries(fd), service: fd.getAll("service").join(", ") };
     try {
       const res = await fetch("/api/enquiry", {
         method: "POST",
@@ -17,7 +31,7 @@ export default function Contact() {
       });
       if (!res.ok) throw new Error();
       setStatus("sent");
-      e.currentTarget.reset();
+      form.reset();
     } catch {
       setStatus("error");
     }
@@ -36,8 +50,8 @@ export default function Contact() {
             Most engagements start with a 30-minute call about what you want to ship.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={site.whatsapp} target="_blank" rel="noreferrer" data-cursor-dark className="btn bg-white text-brand hover:bg-ink hover:text-white">WhatsApp</a>
-            <a href={`mailto:${site.email}`} className="btn border border-white hover:bg-white hover:text-brand">{site.email}</a>
+            <a href={site.whatsapp} target="_blank" rel="noreferrer" data-cursor-dark data-cursor="Chat" className="btn bg-white text-brand hover:bg-ink hover:text-white">WhatsApp</a>
+            <a href={`mailto:${site.email}`} data-cursor="Email" className="btn border border-white hover:bg-white hover:text-brand">{site.email}</a>
           </div>
         </div>
 
@@ -48,15 +62,22 @@ export default function Contact() {
           <input name="name" required placeholder="Name" className={field} />
           <input name="email" type="email" required placeholder="Email" className={field} />
           <input name="company" placeholder="Company / brand" className={field} />
-          <select name="service" className={field} defaultValue="">
-            <option value="" disabled>What are you interested in?</option>
-            <option>On-demand AI video production</option>
-            <option>Bulk AI micro-drama platform</option>
-            <option>AI branded content</option>
-            <option>Sponsored micro-drama series</option>
-          </select>
-          <textarea name="message" required rows={4} placeholder="Your message" className={field} />
-          <button disabled={status === "sending"} className="btn btn-solid w-full disabled:opacity-60">
+          <fieldset>
+            <legend className="mb-2 text-sm text-ink/60">What are you interested in?</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {interests.map((t) => (
+                <label key={t} data-cursor="Pick" className="block">
+                  <input type="checkbox" name="service" value={t} className="peer sr-only" />
+                  <span className="flex h-full items-center gap-3 border border-ink/20 bg-white px-3 py-3 text-sm text-ink transition hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:border-brand">
+                    <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-brand" />
+                    {t}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <textarea ref={message} name="message" required rows={4} placeholder="Your message" className={field} />
+          <button disabled={status === "sending"} data-cursor="Send" className="btn btn-solid w-full disabled:opacity-60">
             {status === "sending" ? "Sending..." : "Initiate brand brief →"}
           </button>
           {status === "sent" && <p className="text-sm text-green-700">Thanks, we&apos;ll get back to you shortly.</p>}

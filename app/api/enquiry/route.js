@@ -1,17 +1,37 @@
-import { site } from "@/data/site";
+// Where website enquiries are emailed.
+const TO = process.env.ENQUIRY_TO || "contactsaranshyadav@gmail.com";
+// The site FormSubmit knows this form by (its one-time activation is for this address + site).
+const SITE = process.env.SITE_URL || "https://brands-on-steroids.vercel.app";
 
-// Website enquiries are emailed to the address in data/site.js (through Resend, needs
-// RESEND_API_KEY) and, when a Telegram bot is set up, posted there as well.
-// Each returns true (sent), false (failed) or null (not set up).
-async function byEmail({ name, email, text }) {
-  if (!process.env.RESEND_API_KEY) return null;
+// Enquiries are emailed to TO and, when a Telegram bot is set up, posted there as well.
+// Email goes through Resend when RESEND_API_KEY is set, otherwise through FormSubmit
+// (no account needed: the first enquiry makes FormSubmit email TO an "Activate form"
+// link, which has to be clicked once).
+// Each sender returns true (sent), false (failed) or null (not set up).
+async function byFormSubmit({ name, email, fields }) {
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(TO)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json", Origin: SITE, Referer: `${SITE}/` },
+      body: JSON.stringify({ _subject: `New website enquiry from ${name}`, _template: "table", _captcha: "false", _replyto: email, ...fields }),
+    });
+    const out = await res.json().catch(() => ({}));
+    if (String(out.success) !== "true") console.error("FormSubmit:", res.status, out.message || "");
+    return res.ok && String(out.success) === "true";
+  } catch {
+    return false;
+  }
+}
+
+async function byEmail({ name, email, text, fields }) {
+  if (!process.env.RESEND_API_KEY) return byFormSubmit({ name, email, fields });
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: process.env.ENQUIRY_FROM || "Brands On Steroids website <onboarding@resend.dev>",
-        to: [site.email],
+        to: [TO],
         reply_to: email, // "Reply" in the inbox answers the person who wrote
         subject: `New website enquiry from ${name}`,
         text,
@@ -50,17 +70,20 @@ export async function POST(req) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 
+    const company = clean(b.company, 150);
+    const service = clean(b.service, 300);
     const text = [
       "New website enquiry",
       `Name: ${name}`,
       `Email: ${email}`,
-      `Company: ${clean(b.company, 150) || "-"}`,
-      `Interested in: ${clean(b.service, 100) || "-"}`,
+      `Company: ${company || "-"}`,
+      `Interested in: ${service || "-"}`,
       "",
       message,
     ].join("\n");
 
-    const sent = await Promise.all([byEmail({ name, email, text }), byTelegram({ text })]);
+    const fields = { name, email, company: company || "-", "interested in": service || "-", message };
+    const sent = await Promise.all([byEmail({ name, email, text, fields }), byTelegram({ text })]);
     if (!sent.includes(true)) throw new Error("enquiry not delivered");
     return Response.json({ ok: true });
   } catch {

@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Drifting "constellation" behind the home hero: small dots that slowly float,
-// faint lines between dots that are close together, and a few dots carrying a
+// Drifting "constellation" behind every page (app/layout.js): small dots that slowly
+// float, faint lines between dots that are close together, and a few dots carrying a
 // tiny label that fades in and out. The cursor is part of it: it links to the dots
-// around it in pink, lights up their lines and nudges them out of its way.
-// Drawn on one <canvas>; pauses off-screen.
+// around it in grey, darkens their lines and nudges them out of its way.
+// Drawn on one <canvas> fixed behind the page; sections with their own background cover it.
 const LABELS = ["NEURAL", "CULTURE", "PROMPT_08", "ENTERTAINMENT", "24FPS", "AI FILM", "A24", "NO ADS"];
 const REACH = 210; // how far the cursor is felt, px
 const PINK = "248,40,112";
@@ -58,7 +58,7 @@ export default function ParticleField({ count = 48, linkDistance = 150 }) {
         p.glow = near > 0.01 && d < REACH ? (1 - d / REACH) * near : 0;
       }
 
-      // links between dots: grey, turning pink around the cursor
+      // links between dots: faint grey, darker around the cursor
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
@@ -67,7 +67,7 @@ export default function ParticleField({ count = 48, linkDistance = 150 }) {
             const k = 1 - d / linkDistance;
             const g = Math.min(pts[i].glow, pts[j].glow);
             ctx.lineWidth = 0.6 + g * 1.2;
-            ctx.strokeStyle = g > 0.02 ? `rgba(${PINK},${k * (0.12 + g * 0.75)})` : `rgba(8,8,8,${k * 0.1})`;
+            ctx.strokeStyle = `rgba(8,8,8,${k * (0.1 + g * 0.4)})`;
             ctx.beginPath();
             ctx.moveTo(pts[i].x, pts[i].y);
             ctx.lineTo(pts[j].x, pts[j].y);
@@ -80,7 +80,7 @@ export default function ParticleField({ count = 48, linkDistance = 150 }) {
       for (const p of pts) {
         if (p.glow < 0.02) continue;
         ctx.lineWidth = 0.6 + p.glow;
-        ctx.strokeStyle = `rgba(${PINK},${p.glow * 0.6})`;
+        ctx.strokeStyle = `rgba(8,8,8,${p.glow * 0.38})`;
         ctx.beginPath();
         ctx.moveTo(mx, my);
         ctx.lineTo(p.x, p.y);
@@ -92,7 +92,7 @@ export default function ParticleField({ count = 48, linkDistance = 150 }) {
       ctx.textBaseline = "middle";
       for (const p of pts) {
         const g = p.glow;
-        ctx.fillStyle = p.pink || g > 0.05 ? `rgba(${PINK},${0.45 + g * 0.5})` : "rgba(8,8,8,0.25)";
+        ctx.fillStyle = p.pink ? `rgba(${PINK},${0.45 + g * 0.5})` : `rgba(8,8,8,${0.25 + g * 0.45})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r + g * 2.2, 0, Math.PI * 2);
         ctx.fill();
@@ -166,5 +166,5 @@ export default function ParticleField({ count = 48, linkDistance = 150 }) {
     };
   }, [count, linkDistance]);
 
-  return <canvas ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" />;
+  return <canvas ref={ref} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 h-full w-full" />;
 }

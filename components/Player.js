@@ -159,6 +159,7 @@ export default function Player({ src, title, onEnded, onPrev, onNext, autoPlay =
       onTouchStart={poke}
       onContextMenu={(e) => e.preventDefault()}
       onDragStart={(e) => e.preventDefault()}
+      data-cursor=""
       className={`relative h-full select-none items-center justify-center bg-black ${fill ? "flex w-full" : "inline-flex max-w-full"}`}
       style={{ WebkitTouchCallout: "none" }}
     >

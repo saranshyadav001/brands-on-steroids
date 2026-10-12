@@ -1,5 +1,6 @@
 import "./globals.css";
 import Cursor from "@/components/Cursor";
+import ParticleField from "@/components/ParticleField";
 import "@fontsource/syne/700.css";
 import "@fontsource/syne/800.css";
 import "@fontsource/space-grotesk/400.css";
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <ParticleField />
         {children}
         <Cursor />
       </body>

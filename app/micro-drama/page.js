@@ -2,6 +2,7 @@ import Rail from "@/components/Rail";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Catalogue from "@/components/Catalogue";
+import IpDrop from "@/components/IpDrop";
 import Services from "@/components/Services";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
@@ -22,6 +23,7 @@ export default async function MicroDrama() {
       <main className="md:pl-[84px]">
         <Hero />
         <Catalogue series={library.series} folder={library.folder} missing={library.missing} />
+        <IpDrop />
         <Services />
         <About />
         <Contact />

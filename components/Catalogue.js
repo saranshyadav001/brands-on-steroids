@@ -80,8 +80,8 @@ export default function Catalogue({ series = [], folder = "", missing = false })
     <section id="catalogue" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
         <p className="label mb-4">[ The catalogue ]</p>
-        <h2 className="h-display mb-12 text-4xl md:text-6xl">
-          Every episode. <span className="text-brand">One feed.</span>
+        <h2 className="h-display catalogue-title mb-12">
+          Microdrama <span className="text-brand">IPs.</span>
         </h2>
 
         {series.length === 0 ? (
@@ -100,6 +100,7 @@ export default function Catalogue({ series = [], folder = "", missing = false })
                   onContextMenu={(e) => e.preventDefault()}
                   onMouseEnter={hoverPlay}
                   onMouseLeave={hoverStop}
+                  data-cursor="Watch"
                   className="group text-left"
                 >
                   <div className="relative aspect-[9/16] overflow-hidden border border-ink/10 bg-gradient-to-b from-ink/30 to-ink/80 transition group-hover:border-brand">

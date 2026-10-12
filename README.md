@@ -77,13 +77,14 @@ the local folders again.
 
 ## Enquiry form
 
-Each enquiry is emailed to the address in `data/site.js` (`site.email`), with the sender's
-address as reply-to. The email is sent through [Resend](https://resend.com):
+Each enquiry is emailed to the address at the top of `app/api/enquiry/route.js`, with the
+sender's address as reply-to. It is sent through [FormSubmit](https://formsubmit.co), which needs
+no account: the first enquiry makes FormSubmit email that address an "Activate form" link, and
+once it is clicked every enquiry is delivered.
 
-1. Sign up at resend.com **with that same address** (then no domain setup is needed).
-2. API Keys -> Create API key, and put it in `.env.local` and on the host as `RESEND_API_KEY`.
-
-Optional: fill in `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to also get each enquiry on Telegram.
+Optional: set `RESEND_API_KEY` to send through Resend instead, `ENQUIRY_TO` to change the address,
+and `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` to also get each enquiry on Telegram.
+The "What are you interested in?" boxes are listed in `data/site.js` (`interests`).
 When deploying, also set `STREAM_SECRET` to any long random string.
 
 ## Where to edit
@@ -93,7 +94,9 @@ When deploying, also set `STREAM_SECRET` to any long random string.
 | Site text, services, team, contact links | `data/site.js` |
 | Micro-drama folder + per-series details | `data/catalogue.js` |
 | Home ad films: folder, titles, descriptions, hidden, order | `data/home.js` |
-| Home hero mesh | `components/ParticleField.js` |
+| Background mesh (every page) | `components/ParticleField.js` |
+| Cursor and the words inside it | `components/Cursor.js` (`data-cursor="..."` on a button sets its word) |
+| "80 new IPs" band and its countdown date | `data/site.js` (`ipDrop`) |
 | Studio section: struck-through list and statement | `data/site.js` (`studio`) |
 | Home hero | `components/HomeHero.js` |
 | Home ad films | `components/AdFilms.js` |

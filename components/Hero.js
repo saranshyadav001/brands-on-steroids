@@ -23,8 +23,8 @@ export default function Hero() {
         </h1>
         <p className="mt-8 max-w-xl text-lg font-medium text-white/90">{site.heroText}</p>
         <div className="mt-10 flex flex-wrap gap-4">
-          <a href="#catalogue" className="btn btn-solid">Watch our work</a>
-          <a href="#contact" className="btn border border-white/60 text-white hover:border-brand hover:text-brand">Book a call</a>
+          <a href="#catalogue" data-cursor="Watch" className="btn btn-solid">Watch our work</a>
+          <a href="#contact" data-cursor="Talk" className="btn border border-white/60 text-white hover:border-brand hover:text-brand">Book a call</a>
         </div>
       </div>
     </section>

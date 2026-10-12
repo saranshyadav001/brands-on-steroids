@@ -24,13 +24,18 @@ body {
 .has-cursor, .has-cursor * { cursor: none !important; }
 .cursor-ring, .cursor-dot { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
 .has-cursor .cursor-ring, .has-cursor .cursor-dot { opacity: 1; }
-.cursor-ring > i { display: block; width: 40px; height: 40px; border-radius: 9999px; border: 1.5px solid rgba(8, 8, 8, 0.75); transition: transform 0.25s, background 0.25s, border-color 0.25s; }
-.cursor-dot > i { display: block; width: 10px; height: 10px; border-radius: 9999px; background: #F82870; transition: background 0.2s, transform 0.2s; }
+.cursor-ring > i { display: block; width: 40px; height: 40px; border-radius: 9999px; border: 1.5px solid rgba(8, 8, 8, 0.75); transition: transform 0.25s, background 0.25s, border-color 0.25s, opacity 0.15s; }
+.cursor-dot > i { display: block; width: 10px; height: 10px; border-radius: 9999px; background: #F82870; transition: background 0.2s, transform 0.2s, opacity 0.15s; }
 .cursor-ring[data-hover="1"] > i { transform: scale(1.6); background: rgba(248, 40, 112, 0.12); border-color: #F82870; }
 .cursor-dot[data-hover="1"] > i { transform: scale(0.6); }
 .cursor-ring[data-light="1"] > i { border-color: #fff; border-width: 2px; }
 .cursor-ring[data-light="1"][data-hover="1"] > i { background: rgba(255, 255, 255, 0.25); border-color: #fff; }
 .cursor-dot[data-light="1"] > i { background: #fff; box-shadow: 0 0 0 1px rgba(8, 8, 8, 0.25); }
+/* Over something clickable: the ring + dot give way to a filled circle with a word in it */
+.cursor-tag { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; }
+.cursor-tag > i { display: grid; place-items: center; width: 86px; height: 86px; border-radius: 9999px; background: #F82870; border: 1.5px solid #080808; box-shadow: 0 0 44px rgba(248, 40, 112, 0.35); color: #fff; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-style: normal; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0; transform: scale(0.2); transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.25), opacity 0.15s; }
+.has-cursor .cursor-tag[data-tag="1"] > i { opacity: 1; transform: scale(1); }
+.has-cursor .cursor-ring[data-tag="1"] > i, .has-cursor .cursor-dot[data-tag="1"] > i { opacity: 0; }
 /* Full screen: the ring + dot are not part of the full-screen video, so the normal arrow comes back there */
 .has-cursor :fullscreen, .has-cursor :fullscreen * { cursor: auto !important; }
 .has-cursor :fullscreen button, .has-cursor :fullscreen input { cursor: pointer !important; }
@@ -69,3 +74,7 @@ video::-webkit-media-controls, video::-webkit-media-controls-enclosure { display
 .home-title-split { max-width: 6.5em; } /* phones: "START" / "CREATING" on two lines */
 @media (min-width: 640px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 44px) / 16.6), 6rem); } .home-title-split { max-width: none; } }
 @media (min-width: 768px) { .home-title { font-size: clamp(1.5rem, calc((100vw - 184px) / 16.6), 6rem); } }
+
+/* Catalogue heading: sized from the screen width so "MICRODRAMA" always fits on one line */
+.catalogue-title { font-size: clamp(1.25rem, calc((100vw - 44px) / 12.4), 2.25rem); }
+@media (min-width: 768px) { .catalogue-title { font-size: clamp(2.25rem, calc((100vw - 184px) / 12.4), 3.75rem); } }

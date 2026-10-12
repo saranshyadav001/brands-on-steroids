@@ -94,6 +94,7 @@ export default function Nav() {
             href="/"
             aria-current={!micro ? "page" : undefined}
             aria-label="BOS - home"
+            data-cursor="Home"
             className={`absolute left-12 top-1/2 hidden -translate-y-1/2 font-display text-xl font-extrabold uppercase leading-none tracking-[0.12em] hover:text-brand md:block lg:left-1/2 lg:-translate-x-1/2 xl:text-2xl ${!micro ? "text-brand" : ""}`}
           >
             BOS
@@ -115,15 +116,16 @@ export default function Nav() {
 
           {/* Desktop */}
           <nav className="hidden items-center gap-5 md:flex xl:gap-8 2xl:gap-12">
-            <Link href="/micro-drama" aria-current={micro ? "page" : undefined} className={page(micro)}>
+            <Link href="/micro-drama" data-cursor="Watch" aria-current={micro ? "page" : undefined} className={page(micro)}>
               Micro Drama
             </Link>
-            <a href={micro ? "#catalogue" : "#work"} className={link}>Work</a>
-            <a href="#about" className={link}>Studio</a>
+            <a href={micro ? "#catalogue" : "#work"} data-cursor="View" className={link}>Work</a>
+            <a href="#about" data-cursor="Meet" className={link}>Studio</a>
             <button
               onClick={toggleSound}
               aria-pressed={sound}
               aria-label={sound ? "Turn sound off" : "Turn sound on"}
+              data-cursor="Sound"
               className={micro ? "grid h-10 w-10 place-items-center hover:text-brand" : "hidden"}
             >
               <Speaker on={sound} />

@@ -1,14 +1,11 @@
 import { home } from "@/data/site";
-import ParticleField from "./ParticleField";
 
-// Home page hero: paper background with a drifting dot-and-line mesh that reacts to the cursor, editorial headline with hand-written notes.
+// Home page hero: paper background (the site-wide dot mesh shows through), editorial headline with hand-written notes.
 // All the words live in data/site.js (export const home).
 
 export default function HomeHero() {
   return (
     <section id="top" className="relative flex min-h-screen flex-col overflow-hidden px-5 pb-8 pt-24 md:px-12 md:pt-28">
-      <ParticleField />
-
       {/* slate line */}
       <div className="relative flex items-center justify-between gap-4 border-b border-ink/10 pb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">
         <p className="min-w-0 truncate">
@@ -53,7 +50,7 @@ export default function HomeHero() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <a href="#contact" data-cursor-light className="group inline-flex items-center gap-4 bg-ink px-6 py-5 font-display text-[11px] font-bold uppercase tracking-[0.22em] text-white transition hover:bg-brand md:px-9 md:text-sm">
+          <a href="#contact" data-cursor-light data-cursor="Create" className="group inline-flex items-center gap-4 bg-ink px-6 py-5 font-display text-[11px] font-bold uppercase tracking-[0.22em] text-white transition hover:bg-brand md:px-9 md:text-sm">
             {home.cta} <span className="text-brand transition group-hover:text-white">→</span>
           </a>
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">
@@ -66,7 +63,7 @@ export default function HomeHero() {
       <ul className="relative flex flex-wrap gap-2 border-t border-ink/10 pt-5">
         {home.chips.map(([label, href], i) => (
           <li key={label}>
-            <a href={href} className="flex items-center gap-2 border border-ink/15 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-[0.12em] transition hover:border-ink hover:bg-ink hover:text-white">
+            <a href={href} data-cursor="Explore" className="flex items-center gap-2 border border-ink/15 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-[0.12em] transition hover:border-ink hover:bg-ink hover:text-white">
               <span className="font-mono text-[9px] font-medium text-brand">{String(i + 1).padStart(2, "0")}</span>
               {label}
             </a>

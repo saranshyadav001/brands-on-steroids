@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Player from "./Player";
 
 // Full-page watch screen: back button, player, and a side panel with
-// breadcrumb, title, hook, plot (More/Less), genre chips, details,
+// breadcrumb, title, hook, plot (More/Less), "Discuss this series", genre chips, details,
 // the episode grid (range tabs + "All Episodes")
 // and the rest of the catalogue. When a video ends the next episode plays,
 // and after the last episode the next title starts.
@@ -96,6 +96,16 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
   const prev = move(-1);
   const next = move(1);
 
+  // "Discuss this series": close the popup, go to the contact form and start the message
+  const discuss = () => {
+    const title = series.title;
+    onClose();
+    setTimeout(() => {
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      window.dispatchEvent(new CustomEvent("bos-discuss", { detail: title }));
+    }, 250);
+  };
+
   const chips = [...(series.genres || []), ...series.cast, ...series.tags];
   const plot = series.plot || "";
   const long = plot.length > 260;
@@ -115,6 +125,7 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
             title={e.title ? `${e.label}: ${e.title}` : e.label}
             aria-current={active ? "true" : undefined}
             aria-label={e.locked ? `${e.label} (locked)` : e.label}
+            data-cursor={e.locked ? "Locked" : "Play"}
             className={`relative grid h-14 place-items-center border font-mono text-[13px] transition ${
               active ? "border-brand bg-brand font-medium text-white" : "border-white/15 bg-white/[0.04] text-white/85 hover:border-brand hover:text-brand"
             } ${e.locked ? "text-white/60" : ""}`}
@@ -151,6 +162,7 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
         type="button"
         onClick={onClose}
         aria-label="Back"
+        data-cursor="Back"
         className="absolute left-4 top-4 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/30 bg-ink/60 text-white backdrop-blur transition hover:border-brand hover:bg-brand lg:left-8 lg:top-7 lg:h-16 lg:w-16"
       >
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -213,6 +225,10 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
                 )}
               </div>
             )}
+
+            <button type="button" onClick={discuss} data-cursor="Talk" className="btn btn-solid mt-7 hover:!bg-white hover:!text-ink">
+              Discuss this series <span aria-hidden="true">→</span>
+            </button>
 
             {epText && (
               <div className="mt-6 border border-white/15 bg-white/[0.04] p-4">
@@ -287,6 +303,7 @@ export default function WatchModal({ series, index, onSelect, onClose, catalogue
                           type="button"
                           onClick={() => !active && onJump?.(x.slug)}
                           aria-current={active ? "true" : undefined}
+                          data-cursor="Play"
                           className={`flex w-full items-center gap-4 border px-4 py-3 text-left transition ${
                             active ? "border-brand bg-brand" : "border-white/15 bg-white/[0.04] hover:border-brand"
                           }`}

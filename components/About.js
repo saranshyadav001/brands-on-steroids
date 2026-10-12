@@ -5,18 +5,17 @@ export default function About() {
   return (
     <section id="about" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
-        {/* the usual checklist, struck through, beside what the studio does instead.
-            The statement is sized from the column width so its longest word always fits on one line. */}
+        {/* the usual checklist (Syne), struck through, beside what the studio does instead (hand-written, Caveat) */}
         <div className="mb-20 grid gap-10 border-b border-ink/10 pb-20 md:mb-24 md:pb-24 lg:grid-cols-2 lg:items-center lg:gap-16">
           <ol>
             {studio.struck.map((t, i) => (
               <li key={t} className="flex items-baseline gap-4 border-t border-ink/10 py-2.5 first:border-t-0">
                 <span className="w-5 shrink-0 font-mono text-[10px] font-medium text-brand">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-display text-sm font-bold uppercase tracking-[0.04em] text-ink/35 line-through decoration-brand decoration-2 md:text-base">{t}</span>
+                <span className="font-display text-sm font-extrabold uppercase tracking-[0.04em] text-ink/35 line-through decoration-brand decoration-2 md:text-base">{t}</span>
               </li>
             ))}
           </ol>
-          <p className="h-display text-[clamp(1rem,calc((100vw-44px)/14.8),2.4rem)] leading-[1.02] lg:text-[clamp(1.25rem,2.6vw,2.5rem)]">
+          <p className="font-hand text-[clamp(2rem,8.6vw,3.25rem)] font-semibold leading-[1.05] text-ink lg:text-[clamp(2.25rem,4.3vw,4.25rem)]">
             {studio.line} <span className="text-brand">{studio.accent}</span>
           </p>
         </div>

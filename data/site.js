@@ -7,7 +7,7 @@ export const site = {
   heroAccent: "binge.",
   heroText:
     "We produce AI-native micro-dramas, branded series and on-demand video for studios, platforms and brands - from script to final cut.",
-  email: "hello@brandsonsteroids.com", // shown on the site; website enquiries are emailed here too
+  email: "hello@brandsonsteroids.com", // shown on the site (form enquiries go to the address in app/api/enquiry/route.js)
   whatsapp: "https://wa.me/919713030042", // opens a WhatsApp chat with +91 97130 30042
   socials: [
     { label: "Instagram", href: "https://instagram.com/" },
@@ -39,6 +39,19 @@ export const home = {
     ["Podcast", "#work"],
   ],
 };
+
+// Micro-drama page: the band before the services, with a countdown to `ends`
+// (date and time, India time). When it is reached the clock stays at 00.
+export const ipDrop = {
+  label: "Original IPs",
+  count: "80",
+  line: "new microdrama original IPs",
+  accent: "ready for sale.",
+  ends: "2026-11-09T18:00:00+05:30", // 28 days from 12 Oct 2026
+};
+
+// "What are you interested in?" boxes in the contact form (more than one can be picked)
+export const interests = ["On-demand AI video production", "Bulk AI micro-drama platform", "AI branded content", "Sponsored micro-drama series"];
 
 export const services = [
   {

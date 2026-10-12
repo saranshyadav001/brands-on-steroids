@@ -17,7 +17,7 @@ export default function Services() {
                   <li key={p}><span className="mr-2 text-brand">→</span>{p}</li>
                 ))}
               </ul>
-              <a href="#contact" className="mt-8 inline-block font-mono text-xs uppercase tracking-widest text-brand hover:text-ink">Inquire →</a>
+              <a href="#contact" data-cursor="Enquire" className="mt-8 inline-block font-mono text-xs uppercase tracking-widest text-brand hover:text-ink">Inquire →</a>
             </div>
           ))}
         </div>
