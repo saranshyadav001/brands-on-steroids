@@ -13,8 +13,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Micro Drama — Brands On Steroids" };
 
-export default function MicroDrama() {
-  const library = getLibrary();
+export default async function MicroDrama() {
+  const library = await getLibrary();
   return (
     <>
       <Rail />

@@ -59,6 +59,21 @@ Add, rename or remove folders and refresh the page - no code change needed.
 - No website can stop screen recording, and a technical person can still capture what their own
   browser plays. This blocks the normal ways of saving a video.
 
+## Videos from Cloudflare R2
+
+On a live server the videos come from a Cloudflare R2 bucket instead of the folder on this computer.
+
+1. Upload the `md` and `homepage` folders to the bucket, keeping the folders as they are.
+2. In the Cloudflare dashboard: R2 -> Manage API tokens -> Create API token, permission
+   "Object Read only", for that bucket. Copy the Access Key ID and the Secret Access Key.
+3. Put `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY` in `.env.local`
+   (and in the environment settings of the host when deploying), then restart the site.
+
+Everything else works the same: one folder in `md` = one title, the text file and poster are read
+from the bucket too, and the videos are still only reachable through the signed player links.
+A new upload shows up on the site within a minute. With the four settings empty, the site reads
+the local folders again.
+
 ## Enquiry form
 
 Copy `.env.example` to `.env.local` and fill in `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.

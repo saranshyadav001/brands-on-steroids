@@ -10,8 +10,8 @@ import { getHomeFilms } from "@/lib/library";
 // straight away and the signed video links are always fresh.
 export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const films = getHomeFilms();
+export default async function Home() {
+  const films = await getHomeFilms();
   return (
     <>
       <Rail />
