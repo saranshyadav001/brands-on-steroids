@@ -75,6 +75,20 @@ from the bucket too, and the videos are still only reachable through the signed 
 A new upload shows up on the site within a minute. With the four settings empty, the site reads
 the local folders again.
 
+## Putting it live (Cloudflare Workers)
+
+The site runs on Cloudflare Workers, next to the R2 bucket that holds the videos, so video
+traffic costs nothing. Settings are in `wrangler.jsonc`.
+
+```bash
+npx wrangler login                      # once per computer: approve in the browser
+npx wrangler secret put STREAM_SECRET   # once: any long random string (signs the video links)
+npm run deploy                          # builds and publishes; run it again after every change
+```
+
+`npm run preview` runs the same build on your computer first. On Cloudflare the bucket is read
+directly, so the `R2_*` keys below are only needed for `npm run dev` on your computer.
+
 ## Enquiry form
 
 Each enquiry is emailed to the address at the top of `app/api/enquiry/route.js`, with the
