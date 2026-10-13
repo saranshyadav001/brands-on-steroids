@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { interests, site } from "@/data/site";
+import { interests, otherServices, site } from "@/data/site";
 
 export default function Contact() {
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
@@ -76,6 +76,12 @@ export default function Contact() {
               ))}
             </div>
           </fieldset>
+          <select name="other" aria-label="Other services" className={field} defaultValue="">
+            <option value="">Other services</option>
+            {otherServices.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </select>
           <textarea ref={message} name="message" required rows={4} placeholder="Your message" className={field} />
           <button disabled={status === "sending"} data-cursor="Send" className="btn btn-solid w-full disabled:opacity-60">
             {status === "sending" ? "Sending..." : "Initiate brand brief →"}

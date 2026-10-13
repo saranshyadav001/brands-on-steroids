@@ -72,17 +72,19 @@ export async function POST(req) {
 
     const company = clean(b.company, 150);
     const service = clean(b.service, 300);
+    const other = clean(b.other, 100);
     const text = [
       "New website enquiry",
       `Name: ${name}`,
       `Email: ${email}`,
       `Company: ${company || "-"}`,
       `Interested in: ${service || "-"}`,
+      `Other services: ${other || "-"}`,
       "",
       message,
     ].join("\n");
 
-    const fields = { name, email, company: company || "-", "interested in": service || "-", message };
+    const fields = { name, email, company: company || "-", "interested in": service || "-", "other services": other || "-", message };
     const sent = await Promise.all([byEmail({ name, email, text, fields }), byTelegram({ text })]);
     if (!sent.includes(true)) throw new Error("enquiry not delivered");
     return Response.json({ ok: true });

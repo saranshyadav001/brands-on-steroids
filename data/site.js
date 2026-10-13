@@ -10,9 +10,8 @@ export const site = {
   email: "hello@brandsonsteroids.com", // shown on the site (form enquiries go to the address in app/api/enquiry/route.js)
   whatsapp: "https://wa.me/919713030042", // opens a WhatsApp chat with +91 97130 30042
   socials: [
-    { label: "Instagram", href: "https://instagram.com/" },
-    { label: "LinkedIn", href: "https://linkedin.com/" },
-    { label: "YouTube", href: "https://youtube.com/" },
+    { label: "Instagram", href: "https://www.instagram.com/brandsonsteroids" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/saransh-yadav-ba2105185" },
   ],
 };
 
@@ -51,7 +50,10 @@ export const ipDrop = {
 };
 
 // "What are you interested in?" boxes in the contact form (more than one can be picked)
-export const interests = ["On-demand AI video production", "Bulk AI micro-drama platform", "AI branded content", "Sponsored micro-drama series"];
+export const interests = ["Ad films", "On-demand AI video production", "Bulk AI micro-drama platform", "AI branded content", "Sponsored micro-drama series"];
+
+// The "Other services" dropdown under those boxes
+export const otherServices = ["Brand identity", "Personal brand", "Brand world", "Brand strategy", "Go-to-market strategy", "Meta ads", "Pre & post production"];
 
 export const services = [
   {
@@ -101,8 +103,7 @@ export const studio = {
     "Brand Awareness & Growth",
     "Measurement & KPIs",
   ],
-  line: "We are an alternate branding studio that treats storytelling and entertainment as the",
-  accent: "only brand strategy.",
+  line: "We are an alternate branding studio that treats storytelling and entertainment as the only brand strategy.",
 };
 
 // Add more people by adding more lines. Photos live in /public/team (square, face centred).

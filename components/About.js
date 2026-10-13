@@ -5,7 +5,7 @@ export default function About() {
   return (
     <section id="about" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
-        {/* the usual checklist (Syne), struck through, beside what the studio does instead (hand-written, Caveat) */}
+        {/* the usual checklist (Syne), struck through, beside what the studio does instead (hand-written, Caveat, pink) */}
         <div className="mb-20 grid gap-10 border-b border-ink/10 pb-20 md:mb-24 md:pb-24 lg:grid-cols-2 lg:items-center lg:gap-16">
           <ol>
             {studio.struck.map((t, i) => (
@@ -15,9 +15,7 @@ export default function About() {
               </li>
             ))}
           </ol>
-          <p className="font-hand text-[clamp(2rem,8.6vw,3.25rem)] font-semibold leading-[1.05] text-ink lg:text-[clamp(2.25rem,4.3vw,4.25rem)]">
-            {studio.line} <span className="text-brand">{studio.accent}</span>
-          </p>
+          <p className="font-hand text-[clamp(2rem,8.6vw,3.25rem)] font-semibold leading-[1.05] text-brand lg:text-[clamp(2.25rem,4.3vw,4.25rem)]">{studio.line}</p>
         </div>
 
         <p className="label mb-4">[ About ]</p>
