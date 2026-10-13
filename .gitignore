@@ -7,3 +7,4 @@ out
 .wrangler
 .dev.vars
 .cloudflare.env
+.open-next
