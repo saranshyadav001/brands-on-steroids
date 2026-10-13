@@ -3,3 +3,6 @@ node_modules
 .env.local
 .stream-secret
 .DS_Store
+.open-next
+.wrangler
+.dev.vars

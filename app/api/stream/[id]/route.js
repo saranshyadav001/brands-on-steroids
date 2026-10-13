@@ -93,8 +93,9 @@ async function fromBucket(req, file) {
 
 export async function GET(req, { params }) {
   const url = new URL(req.url);
-  const file = await findFile(params.id);
-  if (!file || !verifyLink(params.id, url.searchParams.get("e"), url.searchParams.get("s"))) return deny(404, "Not found");
+  const { id } = await params;
+  const file = await findFile(id);
+  if (!file || !verifyLink(id, url.searchParams.get("e"), url.searchParams.get("s"))) return deny(404, "Not found");
   if (!allowedCaller(req, file.kind)) return deny(403, "Forbidden");
 
   if (file.key) return fromBucket(req, file);
