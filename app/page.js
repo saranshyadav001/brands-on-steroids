@@ -4,21 +4,15 @@ import HomeHero from "@/components/HomeHero";
 import AdFilms from "@/components/AdFilms";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
-import { getHomeFilms } from "@/lib/library";
 
-// Rendered on every request so new files in the content folder show up
-// straight away and the signed video links are always fresh.
-export const dynamic = "force-dynamic";
-
-export default async function Home() {
-  const films = await getHomeFilms();
+export default function Home() {
   return (
     <>
       <Rail />
       <Nav />
       <main className="md:pl-[84px]">
         <HomeHero />
-        <AdFilms items={films.items} folder={films.folder} />
+        <AdFilms />
         <About />
         <Contact />
       </main>

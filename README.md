@@ -54,7 +54,7 @@ Add, rename or remove folders and refresh the page - no code change needed.
 ## Video protection
 
 - The player has no download button, no right-click menu, no picture-in-picture and no cast menu.
-- Video files are not in `/public`. They are streamed by `app/api/stream/[id]/route.js` through
+- Video files are not in `/public`. They are streamed by the Worker (`streamResponse` in `lib/api.js`) through
   signed links that expire after 12 hours and only work inside the player on this site. Opening a
   video link in a new tab, "Save link as", `curl`, or embedding it on another site returns 403.
 - No website can stop screen recording, and a technical person can still capture what their own
@@ -75,19 +75,30 @@ from the bucket too, and the videos are still only reachable through the signed 
 A new upload shows up on the site within a minute. With the four settings empty, the site reads
 the local folders again.
 
-## Putting it live (Cloudflare Workers)
+## Putting it live (Cloudflare)
 
-The site runs on Cloudflare Workers, next to the R2 bucket that holds the videos, so video
-traffic costs nothing. Settings are in `wrangler.jsonc`.
+The live site runs on Cloudflare's free plan, next to the R2 bucket that holds the videos:
+
+- **The pages** are plain static files (`next build` writes them to `out/`). Cloudflare serves
+  them directly.
+- **A small Worker** (`worker/index.js`, logic in `lib/api.js`) answers only `/api/*`: the list of
+  videos with their signed links, the videos themselves (read straight from the bucket), and the
+  contact form.
 
 ```bash
-npx wrangler login                      # once per computer: approve in the browser
-npx wrangler secret put STREAM_SECRET   # once: any long random string (signs the video links)
-npm run deploy                          # builds and publishes; run it again after every change
+npm run deploy     # builds and publishes; run it again after every change
 ```
 
-`npm run preview` runs the same build on your computer first. On Cloudflare the bucket is read
-directly, so the `R2_*` keys below are only needed for `npm run dev` on your computer.
+`npm run deploy` reads the Cloudflare deploy token from `.cloudflare.env` (git-ignored). On a new
+computer, either copy that file or run `npx wrangler login` once. Settings are in `wrangler.jsonc`;
+the secret that signs the video links is stored in Cloudflare (`npx wrangler secret put STREAM_SECRET`).
+
+Keep the Worker small: Cloudflare's free plan allows about 10 ms of processing per request, which
+is why the site is not run as a full Next.js server there. Adding or changing videos in the
+bucket needs no deploy; they show up within a minute.
+
+`npm run dev` works as before on your computer (the `app/api/*/route.dev.js` files stand in for
+the Worker, and the `R2_*` keys in `.env.local` are used to read the bucket).
 
 ## Enquiry form
 
@@ -99,7 +110,6 @@ once it is clicked every enquiry is delivered.
 Optional: set `RESEND_API_KEY` to send through Resend instead, `ENQUIRY_TO` to change the address,
 and `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` to also get each enquiry on Telegram.
 The "What are you interested in?" boxes are listed in `data/site.js` (`interests`).
-When deploying, also set `STREAM_SECRET` to any long random string.
 
 ## Where to edit
 

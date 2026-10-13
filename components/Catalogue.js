@@ -1,8 +1,9 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import WatchModal from "./WatchModal";
+import { useLibrary } from "./useLibrary";
 
-// The list comes from the server (lib/library.js), built from the content folder.
+// The list is fetched from /api/library (lib/library.js), built from the content folder / bucket.
 // Opening a card puts ?watch=<series>&ep=<n> in the address bar, so the browser
 // back button closes the popup and a shared link opens the same episode.
 
@@ -26,7 +27,13 @@ const firstPlayable = (s, want = 0) => {
   return j < 0 ? 0 : j;
 };
 
-export default function Catalogue({ series = [], folder = "", missing = false }) {
+const NONE = [];
+
+export default function Catalogue() {
+  const { loading, failed, catalogue } = useLibrary();
+  const series = catalogue?.series || NONE;
+  const folder = catalogue?.folder || "";
+  const missing = Boolean(catalogue?.missing);
   const [watch, setWatch] = useState(null); // { slug, ep }
 
   useEffect(() => {
@@ -84,7 +91,11 @@ export default function Catalogue({ series = [], folder = "", missing = false })
           Microdrama <span className="text-brand">IPs.</span>
         </h2>
 
-        {series.length === 0 ? (
+        {loading ? (
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink/40">Loading the catalogue ...</p>
+        ) : failed ? (
+          <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">The catalogue could not be loaded. Please reload the page.</p>
+        ) : series.length === 0 ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">
             {missing ? "The video folder was not found." : "No videos found yet."} Put your videos in{" "}
             <code className="font-mono text-sm text-ink">{folder}</code> (one folder per series) and refresh this page.

@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Player from "./Player";
+import { useLibrary } from "./useLibrary";
 
 // Home page "Ad films": every video from the homepage folder, one under the other,
-// each with its title above it (tall videos also get a short description beside them). The list comes from the server
-// (lib/library.js getHomeFilms). A video is only loaded when you scroll near it,
+// each with its title above it (tall videos also get a short description beside them). The list is
+// fetched from /api/library (lib/library.js getHomeFilms). A video is only loaded when you scroll near it,
 // plays when clicked, and pauses when you scroll past it or start another one.
 
 function Film({ item }) {
@@ -75,7 +76,10 @@ function Film({ item }) {
   );
 }
 
-export default function AdFilms({ items = [], folder = "" }) {
+export default function AdFilms() {
+  const { loading, failed, films } = useLibrary();
+  const items = films?.items || [];
+  const folder = films?.folder || "";
   return (
     <section id="work" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
@@ -83,7 +87,11 @@ export default function AdFilms({ items = [], folder = "" }) {
           Ad <span className="text-brand">films</span>
         </h2>
 
-        {items.length === 0 ? (
+        {loading ? (
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink/40">Loading films ...</p>
+        ) : failed ? (
+          <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">The films could not be loaded. Please reload the page.</p>
+        ) : items.length === 0 ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">
             No videos found yet. Put your videos in <code className="font-mono text-sm text-ink">{folder}</code> and refresh this page.
           </p>

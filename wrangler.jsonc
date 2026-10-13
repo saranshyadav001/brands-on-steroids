@@ -1,13 +1,13 @@
-// Cloudflare Workers settings (the site is built for Workers by @opennextjs/cloudflare).
-// Deploy with:  npm run deploy
+// Cloudflare settings for the live site.  Publish with:  npm run deploy
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "brands-on-steroids",
-  "main": ".open-next/worker.js",
+  "main": "worker/index.js",
   "compatibility_date": "2026-09-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
-  // The bucket that holds the videos. The site reads it directly (no keys needed here).
+  "compatibility_flags": ["nodejs_compat"],
+  // The pages: static files made by `next build`. Served by Cloudflare directly.
+  "assets": { "directory": "out", "binding": "ASSETS", "not_found_handling": "404-page" },
+  // The bucket that holds the videos. The Worker reads it directly (no keys needed).
   "r2_buckets": [{ "binding": "VIDEOS", "bucket_name": "bos-videos" }],
   "observability": { "enabled": true }
 }
