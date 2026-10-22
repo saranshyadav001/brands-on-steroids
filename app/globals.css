@@ -78,3 +78,24 @@ video::-webkit-media-controls, video::-webkit-media-controls-enclosure { display
 /* Catalogue heading: sized from the screen width so "MICRODRAMA" always fits on one line */
 .catalogue-title { font-size: clamp(1.25rem, calc((100vw - 44px) / 12.4), 2.25rem); }
 @media (min-width: 768px) { .catalogue-title { font-size: clamp(2.25rem, calc((100vw - 184px) / 12.4), 3.75rem); } }
+
+/* Corner brackets around a frame (camera-viewfinder style). Pink and a little wider on hover. */
+.corners { position: relative; }
+.corners::before {
+  content: ""; position: absolute; inset: -7px; pointer-events: none; --c: rgba(8, 8, 8, 0.35); --l: 16px; --w: 1.5px;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / var(--l) var(--w), linear-gradient(var(--c), var(--c)) left top / var(--w) var(--l),
+    linear-gradient(var(--c), var(--c)) right top / var(--l) var(--w), linear-gradient(var(--c), var(--c)) right top / var(--w) var(--l),
+    linear-gradient(var(--c), var(--c)) left bottom / var(--l) var(--w), linear-gradient(var(--c), var(--c)) left bottom / var(--w) var(--l),
+    linear-gradient(var(--c), var(--c)) right bottom / var(--l) var(--w), linear-gradient(var(--c), var(--c)) right bottom / var(--w) var(--l);
+  background-repeat: no-repeat; transition: inset 0.25s;
+}
+.corners:hover::before, .corners[open]::before { --c: #F82870; inset: -10px; }
+details.corners > summary { list-style: none; }
+details.corners > summary::-webkit-details-marker { display: none; }
+
+/* Section headings with long words ("PRODUCTION,"): sized from the space they have, so the longest
+   word always fits on one line. `.side` = the heading sits in the narrow left column on wide screens. */
+.section-title { font-size: clamp(1.25rem, calc((100vw - 44px) / 13.6), 2.25rem); }
+@media (min-width: 768px) { .section-title { font-size: clamp(2rem, calc((100vw - 184px) / 13.6), 3.75rem); } }
+@media (min-width: 1024px) { .section-title.side { font-size: clamp(1.5rem, calc((min(100vw, 1460px) - 264px) * 5 / 12 / 13.6), 3rem); } }

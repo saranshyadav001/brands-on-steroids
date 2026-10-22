@@ -7,7 +7,7 @@ export const site = {
   heroAccent: "binge.",
   heroText:
     "We produce AI-native micro-dramas, branded series and on-demand video for studios, platforms and brands - from script to final cut.",
-  email: "hello@brandsonsteroids.com", // shown on the site (form enquiries go to the address in app/api/enquiry/route.js)
+  email: "hello@brandsonsteroids.com", // shown on the site; form enquiries go here too (lib/api.js)
   whatsapp: "https://wa.me/919713030042", // opens a WhatsApp chat with +91 97130 30042
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/brandsonsteroids" },
@@ -86,6 +86,46 @@ export const services = [
     points: ["Native scene integration", "Product and brand placement", "Recurring presence across episodes"],
   },
 ];
+
+// Home page "What we make": three cards. [title, text, link, link text, icon]
+export const offerings = {
+  label: "Built on purpose, driven by creativity",
+  line: "AI video production,",
+  accent: "end to end.",
+  text: "From the first idea to the final frame: creative direction, AI-native production and cinematic finishing, for brands, platforms and studios that want work people choose to watch.",
+  cards: [
+    ["AI Ad Films", "TV-grade commercials, social campaigns, product launches and brand films, built for a feed-first audience.", "/#work", "See the ad films", "spark"],
+    ["AI Filmmaking", "Narrative shorts, concept trailers, IP development and previs: visual storytelling from script to screen.", "#contact", "Start a project", "clap"],
+    ["AI Micro-dramas", "Binge-built vertical series with consistent characters, made at volume for platforms and their audiences.", "/micro-drama", "Watch the catalogue", "phone"],
+  ],
+};
+
+// "Full-stack production" - the three stages. [title, text, icon]
+export const pipeline = {
+  line: "Full-stack production,",
+  accent: "with GenAI.",
+  text: "One integrated pipeline where AI multiplies human craft: faster turnarounds, consistent characters and worlds, and a finish built for every screen.",
+  stages: [
+    ["Pre-production", "Concepts, scripts, storyboards and previs, explored with GenAI so you see the film before it is made.", "script"],
+    ["GenAI production", "Shots created with state-of-the-art models and AI + VFX hybrid pipelines, directed frame by frame.", "spark"],
+    ["Post-production", "Edit, sound, grade and finishing, so every frame is ready for every screen, from phone to cinema.", "screen"],
+  ],
+};
+
+// Questions and answers (also given to Google as an FAQ). [question, answer]
+export const faq = [
+  ["Is this production-ready, or just AI art?", "Production-ready. Storyboards, key visuals, films and campaigns are delivered in the formats real advertising, marketing and entertainment pipelines need."],
+  ["Can you match our brand style?", "Yes. We build the look around your guidelines, references and past campaigns, so every output feels like you, not like a model's default."],
+  ["How fast can you deliver?", "Fast, and the scope decides how fast. Concept explorations usually take days, not weeks; full campaigns and series are planned with you up front."],
+  ["What AI tools do you use?", "A constantly evolving stack of leading generative models, custom workflows and our own automation. The creative brief picks the tools, never the other way round."],
+  ["Do you work with agencies and production houses?", "Yes. We plug into agencies, production companies and in-house teams as an extension of their pipeline."],
+  ["Can one idea scale across formats?", "Yes. We build systems, not one-offs: one creative direction becomes films, social cuts, digital ads, OOH and print."],
+  ["Can we license your micro-drama IPs?", "Yes. Original micro-drama IPs from our catalogue are available for licensing and sponsorship. Tell us what your platform needs."],
+];
+
+// Brands you have worked with, shown as a wall of names on the home page. Leave empty to hide it.
+// Each entry: "Brand name", or ["Brand name", "/clients/logo.svg"] to show a logo file from /public/clients.
+export const clients = [];
 
 // Studio section, shown before "The mind behind the frame": the usual brand-strategy
 // checklist, struck through, next to what the studio does instead.

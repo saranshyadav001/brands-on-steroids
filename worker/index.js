@@ -14,7 +14,7 @@ export default {
       if (pathname.startsWith("/api/stream/") && req.method === "GET") return await streamResponse(req, pathname.slice("/api/stream/".length));
       if (pathname === "/api/enquiry" && req.method === "POST") {
         // form enquiries are emailed through Cloudflare Email Routing (binding "MAILER" in wrangler.jsonc)
-        const mail = env.MAILER && ((raw) => env.MAILER.send(new EmailMessage(ENQUIRY.from, ENQUIRY.to(), raw)));
+        const mail = env.MAILER && ((to, raw) => env.MAILER.send(new EmailMessage(ENQUIRY.from, to, raw)));
         return await enquiryResponse(req, mail);
       }
     } catch (e) {

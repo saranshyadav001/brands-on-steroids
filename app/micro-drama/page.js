@@ -6,6 +6,8 @@ import IpDrop from "@/components/IpDrop";
 import Services from "@/components/Services";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import Pipeline from "@/components/Pipeline";
+import Faq from "@/components/Faq";
 import { SHARE_IMAGE, staticCatalogue } from "@/lib/site-data";
 
 export const metadata = {
@@ -27,7 +29,9 @@ export default async function MicroDrama() {
         <Catalogue initial={catalogue} />
         <IpDrop />
         <Services />
+        <Pipeline />
         <About />
+        <Faq />
         <Contact />
       </main>
     </>

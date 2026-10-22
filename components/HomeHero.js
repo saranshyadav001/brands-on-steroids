@@ -78,7 +78,7 @@ export default function HomeHero() {
                     {note}
                   </span>
                 </span>
-                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ink/20 text-xl transition group-hover:translate-x-1 group-hover:border-white sm:hidden">
+                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand/45 bg-brand/[0.07] text-xl text-brand transition group-hover:translate-x-1 group-hover:border-white group-hover:bg-transparent group-hover:text-white sm:hidden">
                   →
                 </span>
               </a>

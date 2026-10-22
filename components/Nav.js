@@ -15,8 +15,11 @@ const pages = [
 // Mobile full-page menu, per page
 const menus = {
   "/": [
+    ["What we make", "#what-we-make"],
     ["Ad films", "#work"],
+    ["The pipeline", "#process"],
     ["Studio", "#about"],
+    ["FAQ", "#faq"],
     ["Contact", "#contact"],
   ],
   "/micro-drama": [
@@ -25,7 +28,9 @@ const menus = {
     ["Bulk AI microdrama", "#bulk-microdrama"],
     ["AI branded content", "#branded-content"],
     ["Sponsored microdrama series", "#sponsored-series"],
+    ["The pipeline", "#process"],
     ["Studio", "#about"],
+    ["FAQ", "#faq"],
     ["Contact", "#contact"],
   ],
 };
@@ -91,13 +96,13 @@ export default function Nav() {
         }`}
       >
         <div className="relative flex items-center justify-between gap-3 px-5 py-4 md:justify-end md:px-12 md:py-6">
-          {/* Desktop: "BOS" = home, in the centre of the bar */}
+          {/* Desktop: "BOS" = home, in the centre of the page (the bar starts after the 84px side ribbon) */}
           <Link
             href="/"
             aria-current={!micro ? "page" : undefined}
             aria-label="BOS - home"
             data-cursor="Home"
-            className={`absolute left-12 top-1/2 hidden -translate-y-1/2 font-display text-xl font-extrabold uppercase leading-none tracking-[0.12em] hover:text-brand md:block lg:left-1/2 lg:-translate-x-1/2 xl:text-2xl ${!micro ? "text-brand" : ""}`}
+            className={`absolute left-12 top-1/2 hidden -translate-y-1/2 font-display text-xl font-extrabold uppercase leading-none tracking-[0.12em] hover:text-brand md:block lg:left-[calc(50vw-84px)] lg:-translate-x-1/2 xl:text-2xl ${!micro ? "text-brand" : ""}`}
           >
             BOS
           </Link>
@@ -161,7 +166,7 @@ export default function Nav() {
       {open && (
         <div
           data-cursor-light
-          className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-ink/90 px-6 pb-10 pt-24 text-white backdrop-blur-xl md:hidden"
+          className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-ink/90 px-6 pb-10 pt-[5.5rem] text-white backdrop-blur-xl md:hidden"
         >
           <nav className="flex flex-col pt-2">
             {pages.map(([label, href]) => (
@@ -170,21 +175,21 @@ export default function Nav() {
                 href={href}
                 onClick={() => setOpen(false)}
                 aria-current={here === href ? "page" : undefined}
-                className={`flex items-baseline gap-4 border-b border-white/10 py-3.5 font-display text-[13px] font-extrabold uppercase tracking-[0.22em] hover:text-brand ${here === href ? "text-brand" : ""}`}
+                className={`flex items-baseline gap-3 border-b border-white/10 py-2.5 font-display text-[11px] font-extrabold uppercase tracking-[0.16em] hover:text-brand ${here === href ? "text-brand" : ""}`}
               >
-                <span className="w-5 font-mono text-[10px] font-medium tracking-widest text-brand">{here === href ? "\u25cf" : "\u2192"}</span>
+                <span className="w-5 shrink-0 font-mono text-[9px] font-medium tracking-widest text-brand">{here === href ? "\u25cf" : "\u2192"}</span>
                 {label}
               </Link>
             ))}
-            <span aria-hidden="true" className="mb-1 mt-6 font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">On this page</span>
+            <span aria-hidden="true" className="mb-0.5 mt-5 font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">On this page</span>
             {menu.map(([label, href], i) => (
               <a
                 key={href}
                 href={at(href)}
                 onClick={() => setOpen(false)}
-                className="flex items-baseline gap-4 border-b border-white/10 py-3.5 font-display text-[13px] font-extrabold uppercase tracking-[0.22em] hover:text-brand"
+                className="flex items-baseline gap-3 border-b border-white/10 py-2.5 font-display text-[11px] font-extrabold uppercase tracking-[0.16em] hover:text-brand"
               >
-                <span className="w-5 font-mono text-[10px] font-medium tracking-widest text-brand">
+                <span className="w-5 shrink-0 font-mono text-[9px] font-medium tracking-widest text-brand">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {label}
