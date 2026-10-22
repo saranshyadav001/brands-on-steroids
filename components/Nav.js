@@ -163,28 +163,28 @@ export default function Nav() {
           data-cursor-light
           className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-ink/90 px-6 pb-10 pt-24 text-white backdrop-blur-xl md:hidden"
         >
-          <nav className="my-auto flex flex-col gap-6 py-8">
+          <nav className="flex flex-col pt-2">
             {pages.map(([label, href]) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
                 aria-current={here === href ? "page" : undefined}
-                className={`h-display flex items-baseline gap-4 text-2xl hover:text-brand ${here === href ? "text-brand" : ""}`}
+                className={`flex items-baseline gap-4 border-b border-white/10 py-3.5 font-display text-[13px] font-extrabold uppercase tracking-[0.22em] hover:text-brand ${here === href ? "text-brand" : ""}`}
               >
-                <span className="font-mono text-[11px] font-medium tracking-widest text-brand">{here === href ? "\u25cf" : "\u2192"}</span>
+                <span className="w-5 font-mono text-[10px] font-medium tracking-widest text-brand">{here === href ? "\u25cf" : "\u2192"}</span>
                 {label}
               </Link>
             ))}
-            <span aria-hidden="true" className="h-px w-full bg-white/15" />
+            <span aria-hidden="true" className="mb-1 mt-6 font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">On this page</span>
             {menu.map(([label, href], i) => (
               <a
                 key={href}
                 href={at(href)}
                 onClick={() => setOpen(false)}
-                className="h-display flex items-baseline gap-4 text-2xl hover:text-brand"
+                className="flex items-baseline gap-4 border-b border-white/10 py-3.5 font-display text-[13px] font-extrabold uppercase tracking-[0.22em] hover:text-brand"
               >
-                <span className="font-mono text-[11px] font-medium tracking-widest text-brand">
+                <span className="w-5 font-mono text-[10px] font-medium tracking-widest text-brand">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 {label}

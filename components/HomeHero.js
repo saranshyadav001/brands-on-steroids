@@ -61,24 +61,24 @@ export default function HomeHero() {
 
       {/* category chips */}
       <ul className="relative grid grid-cols-2 gap-2 border-t border-ink/10 pt-5 sm:flex sm:flex-wrap">
-        {home.chips.map(([label, href, featured], i) =>
-          featured ? (
+        {home.chips.map(([label, href, note], i) =>
+          note ? (
             <li key={label} className="col-span-2">
-              {/* phones: a big pink card; wider screens: a pink chip in the row */}
+              {/* phones: a big card; wider screens: a chip like the others */}
               <a
                 href={href}
-                data-cursor="Watch"
-                className="group relative flex items-center gap-4 overflow-hidden bg-brand px-5 py-5 text-white shadow-[0_18px_40px_-18px_rgba(248,40,112,0.85)] transition hover:bg-ink sm:gap-2 sm:px-3 sm:py-2 sm:shadow-none"
+                data-cursor={href.startsWith("#") ? "View" : "Watch"}
+                className="group relative flex items-center gap-4 overflow-hidden border border-ink/15 bg-paper/70 px-5 py-5 text-ink transition hover:border-ink hover:bg-ink hover:text-white sm:gap-2 sm:px-3 sm:py-2"
               >
-                <span className="self-start font-mono text-[10px] font-medium text-white/70 sm:self-auto sm:text-[9px]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="self-start font-mono text-[10px] font-medium text-brand sm:self-auto sm:text-[9px]">{String(i + 1).padStart(2, "0")}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-display text-[1.75rem] font-extrabold uppercase leading-none tracking-tight sm:text-[11px] sm:font-bold sm:leading-normal sm:tracking-[0.12em]">{label}</span>
-                  <span className="mt-2.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/85 sm:hidden">
-                    <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-                    {home.featuredNote}
+                  <span className="mt-2.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60 transition group-hover:text-white/80 sm:hidden">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand" />
+                    {note}
                   </span>
                 </span>
-                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/40 text-xl transition group-hover:translate-x-1 group-hover:border-white sm:hidden">
+                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ink/20 text-xl transition group-hover:translate-x-1 group-hover:border-white sm:hidden">
                   →
                 </span>
               </a>
