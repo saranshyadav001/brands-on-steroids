@@ -60,15 +60,38 @@ export default function HomeHero() {
       </div>
 
       {/* category chips */}
-      <ul className="relative flex flex-wrap gap-2 border-t border-ink/10 pt-5">
-        {home.chips.map(([label, href], i) => (
+      <ul className="relative grid grid-cols-2 gap-2 border-t border-ink/10 pt-5 sm:flex sm:flex-wrap">
+        {home.chips.map(([label, href, featured], i) =>
+          featured ? (
+            <li key={label} className="col-span-2">
+              {/* phones: a big pink card; wider screens: a pink chip in the row */}
+              <a
+                href={href}
+                data-cursor="Watch"
+                className="group relative flex items-center gap-4 overflow-hidden bg-brand px-5 py-5 text-white shadow-[0_18px_40px_-18px_rgba(248,40,112,0.85)] transition hover:bg-ink sm:gap-2 sm:px-3 sm:py-2 sm:shadow-none"
+              >
+                <span className="self-start font-mono text-[10px] font-medium text-white/70 sm:self-auto sm:text-[9px]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display text-[1.75rem] font-extrabold uppercase leading-none tracking-tight sm:text-[11px] sm:font-bold sm:leading-normal sm:tracking-[0.12em]">{label}</span>
+                  <span className="mt-2.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/85 sm:hidden">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                    {home.featuredNote}
+                  </span>
+                </span>
+                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/40 text-xl transition group-hover:translate-x-1 group-hover:border-white sm:hidden">
+                  →
+                </span>
+              </a>
+            </li>
+          ) : (
           <li key={label}>
-            <a href={href} data-cursor="Explore" className="flex items-center gap-2 border border-ink/15 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-[0.12em] transition hover:border-ink hover:bg-ink hover:text-white">
+            <a href={href} data-cursor="Explore" className="flex h-full items-center gap-2 border border-ink/15 bg-paper/70 px-3 py-2 font-display text-[11px] font-bold uppercase tracking-[0.12em] transition hover:border-ink hover:bg-ink hover:text-white">
               <span className="font-mono text-[9px] font-medium text-brand">{String(i + 1).padStart(2, "0")}</span>
               {label}
             </a>
           </li>
-        ))}
+          )
+        )}
       </ul>
     </section>
   );

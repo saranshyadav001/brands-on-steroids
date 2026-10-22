@@ -15,6 +15,9 @@
   "routes": [
     { "pattern": "www.brandsonsteroids.com", "custom_domain": true }
   ], // brandsonsteroids.com (no www) redirects here: see wrangler.redirect.jsonc
+  // Contact form -> email, through Cloudflare Email Routing. The address must be a verified
+  // destination address in Email Routing (dashboard: Email > Email Routing > Destination addresses).
+  "send_email": [{ "name": "MAILER", "destination_address": "contactsaranshyadav@gmail.com" }],
   "r2_buckets": [{ "binding": "VIDEOS", "bucket_name": "bos-videos" }],
   "observability": { "enabled": true }
 }

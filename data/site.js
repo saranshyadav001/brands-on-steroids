@@ -28,11 +28,13 @@ export const home = {
   text: "is an AI-native media house creating films, entertainment and internet moments that people can\u2019t stop talking about.",
   cta: "Let\u2019s create something people can\u2019t ignore",
   strip: ["A24 visual benchmark", "0% generic slop", "24fps"],
-  // chips under the hero: [label, link]
+  // chips under the hero: [label, link, featured?]. The featured one comes first and is the big
+  // pink card on phones (its second line is `featuredNote`).
+  featuredNote: "Original IPs · Watch now",
   chips: [
+    ["Micro drama", "/micro-drama", true],
     ["Social media", "#work"],
     ["AI film making", "#work"],
-    ["Micro drama", "/micro-drama"],
     ["Brand entertainment", "#work"],
     ["Corporate shoots", "#work"],
     ["Podcast", "#work"],

@@ -1,7 +1,8 @@
 // The live site's server: a small Cloudflare Worker. The pages themselves are plain static
 // files (the `out` folder made by `next build`) that Cloudflare serves without running this.
 // The Worker only answers /api/*: the list of videos, the videos themselves, the contact form.
-import { libraryResponse, streamResponse, enquiryResponse } from "../lib/api.js";
+import { EmailMessage } from "cloudflare:email";
+import { libraryResponse, streamResponse, enquiryResponse, ENQUIRY } from "../lib/api.js";
 import { useBucket } from "../lib/r2.js";
 
 export default {
@@ -11,7 +12,11 @@ export default {
     try {
       if (pathname === "/api/library" && req.method === "GET") return await libraryResponse();
       if (pathname.startsWith("/api/stream/") && req.method === "GET") return await streamResponse(req, pathname.slice("/api/stream/".length));
-      if (pathname === "/api/enquiry" && req.method === "POST") return await enquiryResponse(req);
+      if (pathname === "/api/enquiry" && req.method === "POST") {
+        // form enquiries are emailed through Cloudflare Email Routing (binding "MAILER" in wrangler.jsonc)
+        const mail = env.MAILER && ((raw) => env.MAILER.send(new EmailMessage(ENQUIRY.from, ENQUIRY.to(), raw)));
+        return await enquiryResponse(req, mail);
+      }
     } catch (e) {
       console.error(e);
       return new Response("Server error", { status: 500, headers: { "Cache-Control": "no-store" } });
