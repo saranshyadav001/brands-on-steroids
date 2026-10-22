@@ -8,3 +8,4 @@ if [ -f .cloudflare.env ]; then set -a; . ./.cloudflare.env; set +a; fi
 
 npx next build          # the pages -> ./out
 npx wrangler deploy     # ./out + the Worker (worker/index.js)
+npx wrangler deploy -c wrangler.redirect.jsonc   # brandsonsteroids.com -> www.brandsonsteroids.com

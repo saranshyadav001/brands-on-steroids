@@ -100,6 +100,19 @@ bucket needs no deploy; they show up within a minute.
 `npm run dev` works as before on your computer (the `app/api/*/route.dev.js` files stand in for
 the Worker, and the `R2_*` keys in `.env.local` are used to read the bucket).
 
+## Search engines (SEO)
+
+- The site's address is **https://www.brandsonsteroids.com**. `brandsonsteroids.com` and `http://`
+  addresses redirect there (`worker/redirect.js`, published by `npm run deploy`).
+- Every title in the catalogue gets its own page, `/micro-drama/<title>`, with its plot, details
+  and episodes (`app/micro-drama/[slug]/page.js`). The catalogue cards link to them.
+- The catalogue and the ad film titles are written into the pages when they are built, so search
+  engines can read them; the video links still load in the browser.
+- `sitemap.xml`, `robots.txt`, page titles, descriptions, canonical addresses, sharing previews and
+  structured data (organisation, founder, series, breadcrumbs) are all made by the build.
+- **After adding a new title to the bucket, run `npm run deploy`** so it gets its page and its
+  place in the sitemap. (It shows up in the catalogue within a minute either way.)
+
 ## Enquiry form
 
 Each enquiry is emailed to the address at the top of `app/api/enquiry/route.js`, with the

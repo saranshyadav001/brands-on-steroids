@@ -11,7 +11,7 @@ import { useLibrary } from "./useLibrary";
 function Film({ item }) {
   const box = useRef(null);
   const [near, setNear] = useState(false); // close enough to the screen to load
-  const [ratio, setRatio] = useState(16 / 9);
+  const [ratio, setRatio] = useState(item.ratio || 16 / 9); // read from the file when the site was built
 
   useEffect(() => {
     const el = box.current;
@@ -55,7 +55,7 @@ function Film({ item }) {
           }`}
           style={{ "--r": ratio, aspectRatio: String(ratio) }}
         >
-          {near && (
+          {near && item.src && (
             <Player
               src={item.src}
               title={item.title}
@@ -76,10 +76,13 @@ function Film({ item }) {
   );
 }
 
-export default function AdFilms() {
+// `initial`: the films as text, with each frame's shape, built into the page. The live list
+// (with video links) replaces it as soon as it arrives.
+export default function AdFilms({ initial }) {
   const { loading, failed, films } = useLibrary();
-  const items = films?.items || [];
-  const folder = films?.folder || "";
+  const shapes = new Map((initial?.items || []).map((i) => [i.key, i.ratio]));
+  const items = films?.items?.map((i) => ({ ...i, ratio: shapes.get(i.key) || null })) || initial?.items || [];
+  const folder = films?.folder || initial?.folder || "";
   return (
     <section id="work" className="border-t border-ink/10 px-5 py-24 md:px-12">
       <div className="max-w-7xl">
@@ -87,9 +90,9 @@ export default function AdFilms() {
           Ad <span className="text-brand">films</span>
         </h2>
 
-        {loading ? (
+        {loading && !items.length ? (
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink/40">Loading films ...</p>
-        ) : failed ? (
+        ) : failed && !items.length ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">The films could not be loaded. Please reload the page.</p>
         ) : items.length === 0 ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">

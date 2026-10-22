@@ -29,23 +29,26 @@ const firstPlayable = (s, want = 0) => {
 
 const NONE = [];
 
-export default function Catalogue() {
+// `initial`: the catalogue as text, built into the page (so search engines see it and nothing
+// jumps while loading). The live list with video links replaces it as soon as it arrives.
+export default function Catalogue({ initial }) {
   const { loading, failed, catalogue } = useLibrary();
-  const series = catalogue?.series || NONE;
-  const folder = catalogue?.folder || "";
-  const missing = Boolean(catalogue?.missing);
+  const live = catalogue?.series || null;
+  const series = live || initial?.series || NONE;
+  const folder = catalogue?.folder || initial?.folder || "";
+  const missing = Boolean((catalogue || initial)?.missing);
   const [watch, setWatch] = useState(null); // { slug, ep }
 
   useEffect(() => {
     const read = () => {
       const p = new URLSearchParams(window.location.search);
-      const s = series.find((x) => x.slug === p.get("watch"));
+      const s = (live || NONE).find((x) => x.slug === p.get("watch"));
       setWatch(s ? { slug: s.slug, ep: firstPlayable(s, parseInt(p.get("ep") || "0", 10) || 0) } : null);
     };
     read();
     window.addEventListener("popstate", read);
     return () => window.removeEventListener("popstate", read);
-  }, [series]);
+  }, [live]);
 
   const urlFor = (slug, ep) => `${window.location.pathname}?watch=${encodeURIComponent(slug)}&ep=${ep}`;
 
@@ -91,9 +94,9 @@ export default function Catalogue() {
           Microdrama <span className="text-brand">IPs.</span>
         </h2>
 
-        {loading ? (
+        {loading && !series.length ? (
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink/40">Loading the catalogue ...</p>
-        ) : failed ? (
+        ) : failed && !series.length ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">The catalogue could not be loaded. Please reload the page.</p>
         ) : series.length === 0 ? (
           <p className="max-w-xl border-l-2 border-brand pl-4 text-ink/70">
@@ -105,21 +108,27 @@ export default function Catalogue() {
             {series.map((s, i) => {
               const preview = s.episodes.find((e) => e.src);
               return (
-                <button
+                <a
                   key={s.slug}
-                  onClick={() => open(s)}
+                  href={`/micro-drama/${s.slug}`}
+                  onClick={(e) => {
+                    // a plain click plays it here; ctrl/cmd-click etc. open the series page
+                    if (!live || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                    e.preventDefault();
+                    open(s);
+                  }}
                   onContextMenu={(e) => e.preventDefault()}
                   onMouseEnter={hoverPlay}
                   onMouseLeave={hoverStop}
                   data-cursor="Watch"
-                  className="group text-left"
+                  className="group block text-left"
                 >
                   <div className="relative aspect-[9/16] overflow-hidden border border-ink/10 bg-gradient-to-b from-ink/30 to-ink/80 transition group-hover:border-brand">
                     {s.poster ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={s.poster}
-                        alt=""
+                        alt={`${s.title} poster`}
                         loading="lazy"
                         draggable={false}
                         onError={(e) => (e.currentTarget.style.display = "none")}
@@ -151,7 +160,7 @@ export default function Catalogue() {
                       <p className="line-clamp-3 break-words font-display text-[11px] font-extrabold uppercase leading-tight sm:text-sm md:text-base">{s.title}</p>
                     </div>
                   </div>
-                </button>
+                </a>
               );
             })}
           </div>

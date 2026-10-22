@@ -8,6 +8,13 @@
   // The pages: static files made by `next build`. Served by Cloudflare directly.
   "assets": { "directory": "out", "binding": "ASSETS", "not_found_handling": "404-page" },
   // The bucket that holds the videos. The Worker reads it directly (no keys needed).
+  // The site's addresses (www.brandsonsteroids.com is the main one). The Cloudflare test
+  // address (*.workers.dev) is switched off so search engines only ever see the real one.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "www.brandsonsteroids.com", "custom_domain": true }
+  ], // brandsonsteroids.com (no www) redirects here: see wrangler.redirect.jsonc
   "r2_buckets": [{ "binding": "VIDEOS", "bucket_name": "bos-videos" }],
   "observability": { "enabled": true }
 }

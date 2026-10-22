@@ -4,15 +4,23 @@ import HomeHero from "@/components/HomeHero";
 import AdFilms from "@/components/AdFilms";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import { SHARE_IMAGE, staticFilms } from "@/lib/site-data";
 
-export default function Home() {
+export const metadata = {
+  title: { absolute: "Brands On Steroids — AI-Native Films, Ads & Micro-Dramas" },
+  alternates: { canonical: "/" },
+  openGraph: { url: "/", images: [SHARE_IMAGE] },
+};
+
+export default async function Home() {
+  const films = await staticFilms(); // titles + frame shapes in the page itself; video links load in the browser
   return (
     <>
       <Rail />
       <Nav />
       <main className="md:pl-[84px]">
         <HomeHero />
-        <AdFilms />
+        <AdFilms initial={films} />
         <About />
         <Contact />
       </main>

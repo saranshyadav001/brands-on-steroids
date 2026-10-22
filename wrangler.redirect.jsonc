@@ -1,0 +1,10 @@
+// The bare domain only sends visitors (and Google) on to www.brandsonsteroids.com.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bos-apex-redirect",
+  "main": "worker/redirect.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "brandsonsteroids.com", "custom_domain": true }]
+}

@@ -50,6 +50,8 @@ export default function Nav() {
   const here = pathname.startsWith("/micro-drama") ? "/micro-drama" : "/";
   const micro = here === "/micro-drama";
   const menu = menus[here];
+  // on a series page (/micro-drama/<title>) the section links lead back to the micro-drama page
+  const at = (hash) => (pathname === here ? hash : `${here}${hash}`);
   const [scrolled, setScrolled] = useState(false);
   const [sound, setSound] = useState(false);
   const [open, setOpen] = useState(false);
@@ -119,8 +121,8 @@ export default function Nav() {
             <Link href="/micro-drama" data-cursor="Watch" aria-current={micro ? "page" : undefined} className={page(micro)}>
               Micro Drama
             </Link>
-            <a href={micro ? "#catalogue" : "#work"} data-cursor="View" className={link}>Work</a>
-            <a href="#about" data-cursor="Meet" className={link}>Studio</a>
+            <a href={at(micro ? "#catalogue" : "#work")} data-cursor="View" className={link}>Work</a>
+            <a href={at("#about")} data-cursor="Meet" className={link}>Studio</a>
             <button
               onClick={toggleSound}
               aria-pressed={sound}
@@ -178,7 +180,7 @@ export default function Nav() {
             {menu.map(([label, href], i) => (
               <a
                 key={href}
-                href={href}
+                href={at(href)}
                 onClick={() => setOpen(false)}
                 className="h-display flex items-baseline gap-4 text-2xl hover:text-brand"
               >
